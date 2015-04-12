@@ -36,7 +36,7 @@ function realtimeNotification(options)
 			});
 		}
 	}
-
+	
 	function notificationInitialisation()
 	{
 		$.connection.NotificationHub.client[options.getRecordMethodName] = function(strJson)
