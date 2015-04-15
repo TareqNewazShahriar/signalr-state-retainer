@@ -1,9 +1,15 @@
-function realtimeNotification(options)
+/* 
+ * SignalR Notification State Manager v1.0
+ * Released under Apache License
+ * Date: Thu Apr 16 2015 00:43:05 GMT+0600 (Bangladesh Standard Time)
+ */
+function notificationStateManager(options)
 {
 	/* globals */
 	var cons = {
 		dataDomClass: 'signalNotificationDom',
-		storeKey: 'signalrNotify'
+		storeKey: 'signalrNotify',
+		max: 15
 	}
 
 	/* at dom ready */
@@ -16,8 +22,8 @@ function realtimeNotification(options)
 	/* calls at initialisation */
 	function pluginInitialisation()
 	{	
-		var dom = $(options.domSelector);
-		$(dom).hide();
+		var dom = $(options.recordContentSelector);
+		$(dom).hide(); /* highest priority */
 		$(dom).addClass(cons.dataDomClass);
 		// removed stored data if signed out
 		if(options.signOutButtonSelector)
@@ -28,15 +34,16 @@ function realtimeNotification(options)
 			});
 		}
 		// show/hide notification panel
-		if(options.showNotificationOnCounterClick)
+		if(options.showNotificationsOnCounterClick)
 		{
-			$(options.notificationCounterSelector).click(function()
+			$(options.counterSelector).click(function()
 			{
 				$('.record-container').slideToggle("fast");
 			});
 		}
+		options.max = options.max || cons.max;
 	}
-	
+
 	function notificationInitialisation()
 	{
 		$.connection.NotificationHub.client[options.getRecordMethodName] = function(strJson)
@@ -47,8 +54,11 @@ function realtimeNotification(options)
 			$(html).prependTo($('.' + cons.dataDomClass).parent());
 			addItemToStoredData(record);
 
-			if(options.notificationCounterSelector)
+			if(options.counterSelector)
 				increamentNotificationCounter(1);
+
+			if(typeof options.onRecordArrival == 'function')
+				options.onRecordArrival();
 		}
 		$.connection.hub.start().done(function()
 		{
@@ -61,8 +71,8 @@ function realtimeNotification(options)
 
 	function increamentNotificationCounter(i)
 	{
-		// increment the notification counter
-		var counter = $(options.notificationCounterSelector);
+		/* increment the notification counter */
+		var counter = $(options.counterSelector);
 		if(counter[0].tagName.toUpperCase() == 'INPUT')
 		{
 			var val = parseInt($(counter).val());
@@ -92,8 +102,25 @@ function realtimeNotification(options)
 	{
 		$.connection.NotificationHub.server[options.getListMethodName]().then(function(strJsonList)
 		{
-			sessionStorage.setItem(cons.storeKey, strJsonList);
-			getStateAtPageLoad();
+			/* if more than max then slice */
+			if(typeof strJsonList == 'string')
+			{
+				var list = JSON.parse(strJsonList);
+				if(list.length > options.max)
+					list = list.slice(list.length - options.max, list.length);
+			}
+			else
+			{
+				if(strJsonList.length > options.max)
+					strJsonList = strJsonList.slice(strJsonList.length - options.max, strJsonList.length);
+				strJsonList = JSON.stringify(strJsonList);
+			}
+			
+			sessionStorage.setItem(cons.storeKey, strJsonList); /* store in sessionStorage */
+			getStateAtPageLoad(); /* render the list */
+
+			if(typeof options.onGetList == 'function') /* callback */
+				options.onGetList();
 		});
 	}
 
@@ -109,7 +136,9 @@ function realtimeNotification(options)
 		{
 			if(options.dateTimeFieldName == key)
 				record[key] = formatDateTime(record[key], true)
-			$(dom).html($(dom).html().replace('[[' + key + ']]', record[key])); /* html replace removes all event bindings. since we're cloning so no problem */
+
+			var reg = new RegExp('\\[\\[' + key + '\\]\\]', 'gim');
+			$(dom).html($(dom).html().replace(reg, record[key])); /* html replace removes all event bindings. since we're cloning so no problem */
 		}
 		return dom;
 	}
@@ -128,8 +157,8 @@ function realtimeNotification(options)
 			$(dom).prependTo($('.'+cons.dataDomClass).parent());
 		}
 
-		if(options.notificationCounterSelector)
-			increamentNotificationCounter(records.length);
+		if(options.counterSelector)
+			increamentNotificationCounter(options.max);
 	}
 	
 	function formatDateTime(time, timeDateIn2Lines)
