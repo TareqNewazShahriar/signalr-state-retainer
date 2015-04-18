@@ -146,11 +146,12 @@ function notificationStateManager(options)
 		/* render values in html */
 		for(var key in record)
 		{
+			var val = record[key];
 			if(options.dateTimeFieldName == key)
-				record[key] = formatDateTime(record[key], true)
+				val = formatDateTime(record[key], true)
 
 			var reg = new RegExp('\\[\\[' + key + '\\]\\]', 'gim');
-			$(dom).html($(dom).html().replace(reg, record[key])); /* html replace removes all event bindings. since we're cloning so no problem */
+			$(dom).html($(dom).html().replace(reg, val)); /* html replace removes all event bindings. since we're cloning so no problem */
 		}
 		return dom;
 	}
