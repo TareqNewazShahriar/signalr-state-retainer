@@ -36,18 +36,15 @@ function notificationStateManager(options)
 			});
 		}
 		// show/hide notification panel
-		if(options.showNotificationsOnCounterClick)
-		{
-			$(options.counterSelector).click(function()
-			{
-				$(options.notificationPanelSelector).slideToggle("fast");
-			});
+		if(options.notificationOpenerSelector && options.notificationPanelSelector)
+		{	
 			$(document).click(function(e)
 			{
 				var clickedDom = $(e.target);
-				if(clickedDom.parents(options.notificationPanelSelector).length == 0
+				if(clickedDom[0] == $(options.notificationOpenerSelector)[0])
+					$(options.notificationPanelSelector).slideToggle("fast");
+				else if(clickedDom.parents(options.notificationPanelSelector).length == 0
 					&& clickedDom[0] != $(options.notificationPanelSelector)[0]
-					&& clickedDom[0] != $(options.counterSelector)[0]
 					&& $(options.notificationPanelSelector).css('display') != 'none')
 				{
 					$(options.notificationPanelSelector).slideUp("fast");
