@@ -3,13 +3,15 @@
  * Released under Apache License
  * Date: Thu Apr 16 2015 00:43:05 GMT+0600 (Bangladesh Standard Time)
  */
+
 function notificationStateManager(options)
 {
+	'use strict';
+
 	/* globals */
 	var cons = {
 		dataDomClass: 'signalNotificationDom',
-		storeKey: 'signalrNotify',
-		max: 15
+		storeKey: 'signalNotificationData'
 	}
 
 	/* at dom ready */
@@ -38,17 +40,27 @@ function notificationStateManager(options)
 		{
 			$(options.counterSelector).click(function()
 			{
-				$('.record-container').slideToggle("fast");
+				$(options.notificationPanelSelector).slideToggle("fast");
+			});
+			$(document).click(function(e)
+			{
+				var clickedDom = $(e.target);
+				if(clickedDom.parents(options.notificationPanelSelector).length == 0
+					&& clickedDom[0] != $(options.notificationPanelSelector)[0]
+					&& clickedDom[0] != $(options.counterSelector)[0]
+					&& $(options.notificationPanelSelector).css('display') != 'none')
+				{
+					$(options.notificationPanelSelector).slideUp("fast");
+				}
 			});
 		}
-		options.max = options.max || cons.max;
 	}
 
 	function notificationInitialisation()
 	{
-		$.connection.NotificationHub.client[options.getRecordMethodName] = function(strJson)
-		{
-			var record = JSON.parse(strJson);
+		$.connection.NotificationHub.client[options.getRecordMethodName] = function(jsonObj)
+		{	
+			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
 			/* append that notification */
 			var html = createHtml(record);
 			$(html).prependTo($('.' + cons.dataDomClass).parent());
@@ -58,15 +70,47 @@ function notificationStateManager(options)
 				increamentNotificationCounter(1);
 
 			if(typeof options.onRecordArrival == 'function')
-				options.onRecordArrival();
+				options.onRecordArrival(record);
 		}
 		$.connection.hub.start().done(function()
 		{
-			if(!sessionStorage.getItem(cons.storeKey))
+			if(!getStoredData(cons.storeKey)) // if no data found
 				getList();
 			else
 				getStateAtPageLoad();
 		})
+	}
+
+	function getList()
+	{
+		$.connection.NotificationHub.server[options.getListMethodName]().then(function(jsonData)
+		{
+			var jsonList;
+			/* if more than max, then slice */
+			jsonList = typeof jsonData == 'string' ? JSON.parse(jsonData) : jsonData;
+			storeData(cons.storeKey, jsonData);
+			getStateAtPageLoad(); /* render the jsonList */
+
+			if(typeof options.onGetList == 'function') /* user's callback */
+				options.onGetList(jsonList);
+		});
+	}
+
+	/* check cookie and retrieve notification data */
+	function getStateAtPageLoad()
+	{
+		var jsonList = getStoredData(cons.storeKey);
+		if(!jsonList) return; /* nothing to render, return */
+
+		var dom;
+		for(var i=0; i<jsonList.length; i++)
+		{
+			dom = createHtml(jsonList[i]);
+			$(dom).appendTo($('.' + cons.dataDomClass).parent());
+		}
+
+		if(options.counterSelector)
+			increamentNotificationCounter(jsonList.length);
 	}
 
 	function increamentNotificationCounter(i)
@@ -77,53 +121,24 @@ function notificationStateManager(options)
 		{
 			var val = parseInt($(counter).val());
 			if(!val) val = 0;
-			$(counter).val(val+i);
+			$(counter).val(val + i);
 		}
 		else
 		{
 			var val = parseInt($(counter).html());
 			if(!val) val = 0;
-			$(counter).html(val+i);
+			$(counter).html(val + i);
 		}
 	}
 
-	function addItemToStoredData(record)
-	{	
-		var storedData = sessionStorage.getItem(cons.storeKey);
-		if(storedData)
-		{
-			var jsonList = JSON.parse(storedData);
-			jsonList.push(record);
-		}
-		sessionStorage.setItem(cons.storeKey, JSON.stringify(jsonList));
-	}
-
-	function getList()
+	function addItemToStoredData(jsonObj)
 	{
-		$.connection.NotificationHub.server[options.getListMethodName]().then(function(strJsonList)
-		{
-			/* if more than max then slice */
-			if(typeof strJsonList == 'string')
-			{
-				var list = JSON.parse(strJsonList);
-				if(list.length > options.max)
-					list = list.slice(list.length - options.max, list.length);
-			}
-			else
-			{
-				if(strJsonList.length > options.max)
-					strJsonList = strJsonList.slice(strJsonList.length - options.max, strJsonList.length);
-				strJsonList = JSON.stringify(strJsonList);
-			}
-			
-			sessionStorage.setItem(cons.storeKey, strJsonList); /* store in sessionStorage */
-			getStateAtPageLoad(); /* render the list */
-
-			if(typeof options.onGetList == 'function') /* callback */
-				options.onGetList();
-		});
+		var jsonList = getStoredData(cons.storeKey);
+		if(jsonList)
+			jsonList.unshift(jsonObj);
+		storeData(cons.storeKey, jsonList);
 	}
-
+	
 	function createHtml(record)
 	{
 		/* clone the record render dom */
@@ -132,7 +147,7 @@ function notificationStateManager(options)
 		dom.show();
 
 		/* render values in html */
-		for(key in record)
+		for(var key in record)
 		{
 			if(options.dateTimeFieldName == key)
 				record[key] = formatDateTime(record[key], true)
@@ -143,24 +158,6 @@ function notificationStateManager(options)
 		return dom;
 	}
 
-	/* check cookie and retrieve notification data */
-	function getStateAtPageLoad()
-	{
-		var storedData = sessionStorage.getItem(cons.storeKey);
-		if(!storedData) return; /* no previously stored data */
-
-		var records = JSON.parse(storedData);
-		var dom;
-		for(var i = records.length - 1; i >= 0; i--)
-		{
-			dom = createHtml(records[i]);
-			$(dom).prependTo($('.'+cons.dataDomClass).parent());
-		}
-
-		if(options.counterSelector)
-			increamentNotificationCounter(options.max);
-	}
-	
 	function formatDateTime(time, timeDateIn2Lines)
 	{
 		var date = new Date(time + ' GMT+0000');
@@ -171,5 +168,31 @@ function notificationStateManager(options)
 		time += date.toDateString() == now.toDateString() ? '' : (timeDateIn2Lines ? '<br/>' : ' ') + date.toLocaleDateString();
 		return time;
 
+	}
+
+	function storeData(key, jsonData)
+	{
+		if(!sessionStorage) return;
+
+		var strJson = null;
+		if(jsonData)
+		{
+			var strJson, jsonList;
+			jsonList = typeof jsonData == 'string' ? jsonList = JSON.parse(jsonData) : jsonData;
+			strJson = escape(JSON.stringify(jsonList));
+		}
+		sessionStorage.setItem(key, strJson);
+	}
+
+	function getStoredData(key)
+	{
+		if(!sessionStorage) return;
+
+		var jsonList = null;
+		var strJson = sessionStorage.getItem(key);
+		if(strJson)
+			jsonList = JSON.parse(unescape(strJson));
+		
+		return jsonList;
 	}
 }
