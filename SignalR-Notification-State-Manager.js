@@ -55,7 +55,7 @@ function notificationStateManager(options)
 
 	function notificationInitialisation()
 	{
-		$.connection.NotificationHub.client[options.getRecordMethodName] = function(jsonObj)
+		$.connection[options.signalrHubName].client[options.getRecordMethodName] = function(jsonObj)
 		{	
 			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
 			/* append that notification */
@@ -80,7 +80,7 @@ function notificationStateManager(options)
 
 	function getList()
 	{
-		$.connection.NotificationHub.server[options.getListMethodName]().then(function(jsonData)
+		$.connection[options.signalrHubName].server[options.getListMethodName]().then(function(jsonData)
 		{
 			var jsonList;
 			/* if more than max, then slice */
