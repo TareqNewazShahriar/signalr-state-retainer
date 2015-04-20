@@ -9,6 +9,6 @@ notificationStateManager({
 	/* optinoal */
 	notificationOpenerSelector: '#countNotification',
 	notificationPanelSelector: '.record-container',
-	onGetList: function(list) { console.log(list.length) },
-	onRecordArrival: function(obj) { console.log(obj.length) }
+	onGetList: function(list) { console.log('Total: ' + list.length) },
+	onRecordArrival: function(obj) { console.log('Log ID: ' + obj.logId) }
 });
