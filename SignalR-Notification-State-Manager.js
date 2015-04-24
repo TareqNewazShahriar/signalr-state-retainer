@@ -1,5 +1,5 @@
 /* 
- * SignalR Notification State Manager v1.0
+ * SignalR Notification State Manager v1.0.1
  * Released under Apache License
  * Date: Thu Apr 16 2015 00:43:05 GMT+0600 (Bangladesh Standard Time)
  */
@@ -27,7 +27,7 @@ function notificationStateManager(options)
 		var dom = $(options.recordContentSelector);
 		$(dom).hide(); /* highest priority */
 		$(dom).addClass(cons.dataDomClass);
-		// removed stored data if signed out
+		/* removed stored data if signed out */
 		if(options.signOutButtonSelector)
 		{
 			$(options.signOutButtonSelector).click(function()
@@ -35,7 +35,7 @@ function notificationStateManager(options)
 				sessionStorage.removeItem(cons.storeKey);
 			});
 		}
-		// show/hide notification panel
+		/* show/hide notification panel */
 		if(options.notificationOpenerSelector && options.notificationPanelSelector)
 		{	
 			$(document).click(function(e)
@@ -58,10 +58,10 @@ function notificationStateManager(options)
 		$.connection[options.signalrHubName].client[options.getRecordMethodName] = function(jsonObj)
 		{	
 			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
+			addItemToStoredData(record);
 			/* append that notification */
 			var html = createHtml(record);
 			$(html).prependTo($('.' + cons.dataDomClass).parent());
-			addItemToStoredData(record);
 
 			if(options.counterSelector)
 				increamentNotificationCounter(1);
@@ -71,7 +71,7 @@ function notificationStateManager(options)
 		}
 		$.connection.hub.start().done(function()
 		{
-			if(!getStoredData(cons.storeKey)) // if no data found
+			if(!getStoredData(cons.storeKey)) /* if no data found */
 				getList();
 			else
 				getStateAtPageLoad();
@@ -139,33 +139,31 @@ function notificationStateManager(options)
 	function createHtml(record)
 	{
 		/* clone the record render dom */
-		var dom = $('.'+cons.dataDomClass).clone();
+		var dom = $('.' + cons.dataDomClass).clone();
 		dom.removeClass(cons.dataDomClass);
 		dom.show();
-
+		var html = dom[0].outerHTML; /* take html of the dom itself too */
 		/* render values in html */
 		for(var key in record)
 		{
 			var val = record[key];
 			if(options.dateTimeFieldName == key)
-				val = formatDateTime(record[key], true)
-
+				val = formatDateTime(record[key], false);
 			var reg = new RegExp('\\[\\[' + key + '\\]\\]', 'gim');
-			$(dom).html($(dom).html().replace(reg, val)); /* html replace removes all event bindings. since we're cloning so no problem */
+			html = html.replace(reg, val); /* html replace removes all event bindings. since we're cloning so no problem */
 		}
-		return dom;
+		return html;
 	}
 
 	function formatDateTime(time, timeDateIn2Lines)
 	{
-		var date = new Date(time + ' GMT+0000');
+		var date = time.indexOf('Date(')>=0? new Date(parseInt(time.slice(6,-2))) : new Date(time + ' GMT+0000');
 		var now = new Date();
 		time = (date.getHours() % 12 || 12) +				/* 12 hour format */
 			':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) +	/* min with zero padding */
 			' ' + (date.getHours() < 12 ? 'AM' : 'PM');	/* AM / PM */
 		time += date.toDateString() == now.toDateString() ? '' : (timeDateIn2Lines ? '<br/>' : ' ') + date.toLocaleDateString();
 		return time;
-
 	}
 
 	function storeData(key, jsonData)
