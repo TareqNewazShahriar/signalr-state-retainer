@@ -1,0 +1,40 @@
+﻿@model SingnalRNotificationStateManager.Models.Log
+
+@{
+	ViewBag.Title = "Log Details";
+}
+
+<h2>LogDetails</h2>
+
+<div>
+	<hr />
+	<table>
+		<tr>
+			<th style="width:150px;">
+				@Html.DisplayNameFor(model => model.Summary)
+			</th>
+
+			<td>
+				@Html.DisplayFor(model => model.Summary)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.User)
+			</th>
+
+			<td>
+				@Html.DisplayFor(model => model.User)
+			</td>
+		</tr>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.CreationDate)
+			</th>
+
+			<td>
+				@Html.DisplayFor(model => model.CreationDate)
+			</td>
+		</tr>
+	</table>
+</div>
