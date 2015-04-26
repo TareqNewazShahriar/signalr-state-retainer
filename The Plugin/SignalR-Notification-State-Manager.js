@@ -1,6 +1,7 @@
 /* 
  * SignalR Notification State Manager v1.0.1
  * Released under Apache License
+ * This plugin needs jQuery [http://www.jquery.com], just like SignalR's scripts.
  * Date: Thu Apr 16 2015 00:43:05 GMT+0600 (Bangladesh Standard Time)
  */
 
@@ -9,6 +10,7 @@ function notificationStateManager(options)
 	'use strict';
 
 	/* globals */
+	var addAt = { top:'top', bottom: 'bottom' }
 	var cons = {
 		dataDomClass: 'signalNotificationDom',
 		storeKey: 'signalNotificationData'
@@ -58,10 +60,13 @@ function notificationStateManager(options)
 		$.connection[options.signalrHubName].client[options.getRecordMethodName] = function(jsonObj)
 		{	
 			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
-			addItemToStoredData(record);
+			addItemToStoredData(record, options.addAt);
 			/* append that notification */
 			var html = createHtml(record);
-			$(html).prependTo($('.' + cons.dataDomClass).parent());
+			if(options.addAt == addAt.bottom)
+				$(html).appendTo($('.' + cons.dataDomClass).parent());
+			else
+				$(html).prependTo($('.' + cons.dataDomClass).parent());
 
 			if(options.counterSelector)
 				increamentNotificationCounter(1);
@@ -132,7 +137,7 @@ function notificationStateManager(options)
 	{
 		var jsonList = getStoredData(cons.storeKey);
 		if(jsonList)
-			jsonList.unshift(jsonObj);
+			options.addAt == addAt.bottom ? (jsonList.push(jsonObj)) : (jsonList.unshift(jsonObj));
 		storeData(cons.storeKey, jsonList);
 	}
 	
