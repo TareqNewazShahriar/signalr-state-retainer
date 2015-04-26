@@ -3,7 +3,7 @@ This plugin helps you to retain all the data on client side sessionStorage and r
 
 Here are the quick steps (for nerds) of How to use the plugin-
 
-**Server-side C#/VB Steps**:
+######Server-side C#/VB Steps
 * **Step 1:** In your SignalR hub, add a method which will call the client method when a new notification will be available.
 Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with that name. This method will return the Json of the notification data. For example
 
@@ -27,7 +27,7 @@ public dynamic notificationList(List<Log> logs)
 ````
 
 
-**JS, Html Steps:**
+######JS, Html Steps
 * **Steps 3**: Add an Html container to your desired place to render the data using the properties of the data.
 Suppose our record has these fields: Id, StudentName, RollNo, Address, CreationDate.
 So the HTML will be something like that:
@@ -67,7 +67,7 @@ $(function()
 
 
 
-**Plugin Parameter Description**
+#####Plugin Parameter Description
 
 The parameter contains 10 options and 2 events.
 
