@@ -1,7 +1,7 @@
 #### SignalR Notification State Manager
 Javascript plugin to manage the state of the SignalR realtime notifications between page redirections. 
 
-**Here's the quick steps (for the nerds) of How to use the plugin**
+**Here are the quick steps (for nerds) of How to use the plugin**
 
 Server-side C#/VB Steps:
 * **Step 1**: In your SignalR hub, add a method which will call the client method when a new notification will be available.
