@@ -7,7 +7,7 @@
 	@Styles.Render("~/Content/css")
 	<script src="~/Scripts/jquery-1.11.2.min.js"></script>
 	@if(Request.Cookies.Get(".ASPXAUTH") != null)
-	{			// we're just moking the authentication
+	{			// we're just mocking the authentication
 		<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
 		<script src="~/signalr/hubs"></script>
 		<script src="~/Scripts/signalRNotificationStateManager.js"></script>
@@ -15,7 +15,7 @@
 </head>
 <body>
 	@if(Request.Cookies.Get(".ASPXAUTH") != null)
-	{			// we're just moking the authentication
+	{			// we're just mocking the authentication
 		@Html.Partial("_NotificationPanel")
 		@Html.ActionLink("Sign-out", "SignOut", "Home", null, htmlAttributes: new { style = "float:right;", id="signout" })
 		<br /><br />

@@ -9,39 +9,7 @@ using System.Web.Security;
 namespace SingnalRNotificationStateManager.Controllers
 {
 	public class HomeController : Controller
-	{
-		public ActionResult SignIn()
-		{
-			if(Request.Cookies.Get(".ASPXAUTH") != null)
-				return RedirectToAction("Index");
-			return View();
-		}
-
-		[HttpPost]
-		public ActionResult SignIn(string username, string password)
-		{
-			NotifyClients();
-			if(string.IsNullOrWhiteSpace(username))
-			{
-				ModelState.AddModelError("", "No username!!! Pleeez type one.");
-				ViewBag.uername = username;
-				ViewBag.password = password;
-				return View();
-			}
-			else
-			{
-				FormsAuthentication.SetAuthCookie(username, false); // we're just moking the authentication
-				return RedirectToAction("Index");
-			}
-		}
-
-		public ActionResult SignOut()
-		{
-			NotifyClients();
-			FormsAuthentication.SignOut();
-			return RedirectToAction("SignIn");
-		}
-
+	{	
 		public ActionResult Index()
 		{
 			NotifyClients();
@@ -80,5 +48,41 @@ namespace SingnalRNotificationStateManager.Controllers
 			LogList.Logs.Add(log);
 			SignalRHub.NotificationHub.BroadcastFromServer(log);
 		}
+		
+		#region Mock Signin-signout actions
+
+		public ActionResult SignIn()
+		{
+			if(Request.Cookies.Get(".ASPXAUTH") != null)
+				return RedirectToAction("Index");
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult SignIn(string username, string password)
+		{
+			NotifyClients();
+			if(string.IsNullOrWhiteSpace(username))
+			{
+				ModelState.AddModelError("", "No username!!! Pleeez type one.");
+				ViewBag.uername = username;
+				ViewBag.password = password;
+				return View();
+			}
+			else
+			{
+				FormsAuthentication.SetAuthCookie(username, false); // we're just mocking the authentication
+				return RedirectToAction("Index");
+			}
+		}
+
+		public ActionResult SignOut()
+		{
+			NotifyClients();
+			FormsAuthentication.SignOut();
+			return RedirectToAction("SignIn");
+		}
+
+		#endregion
 	}
 }

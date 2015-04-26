@@ -76,7 +76,7 @@ function notificationStateManager(options)
 		}
 		$.connection.hub.start().done(function()
 		{
-			if(!getStoredData(cons.storeKey)) /* if no data found */
+			if(options.getListMethodName && !getStoredData(cons.storeKey)) /* if no data found */
 				getList();
 			else
 				getStateAtPageLoad();
