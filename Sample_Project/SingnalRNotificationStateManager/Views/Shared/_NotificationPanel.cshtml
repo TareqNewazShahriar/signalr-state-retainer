@@ -1,5 +1,5 @@
 ﻿<script>
-	window.onload = function()
+	$(function()
 	{
 		notificationStateManager({
 			signalrHubName: 'NotificationHub',
@@ -16,7 +16,7 @@
 			onGetList: function(list) { console.log('Total: ' + list.length) },
 			onRecordArrival: function(obj) { console.log('Log ID: ' + obj.Id) }
 		});
-	};
+	});
 </script>
 
 <div class="nofity-container">
