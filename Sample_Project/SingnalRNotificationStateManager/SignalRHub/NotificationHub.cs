@@ -15,7 +15,7 @@ namespace SingnalRNotificationStateManager.SignalRHub
 	{
 		public static void BroadcastFromServer(Log log)
 		{
-			var jsonObj = new JavaScriptSerializer().Serialize(new { log.Id, log.Summary, log.User, CreationDate = log.CreationDate });
+			var jsonObj = new JavaScriptSerializer().Serialize(new { log.Id, log.Summary, log.User, log.CreationDate });
 
 			var signalrHub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
 			signalrHub.Clients.All.getNotified(jsonObj);
@@ -23,7 +23,7 @@ namespace SingnalRNotificationStateManager.SignalRHub
 
 		public dynamic notificationList()
 		{	
-			return new JavaScriptSerializer().Serialize(LogList.Logs.OrderByDescending(x=>x.CreationDate).Take(10));
+			return new JavaScriptSerializer().Serialize(LogList.Logs.OrderByDescending(x=>x.Id).Take(10));
 		}
 	}
 }
