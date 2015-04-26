@@ -3,14 +3,15 @@
 	{
 		notificationStateManager({
 			signalrHubName: 'NotificationHub',
-			recordContentSelector: '.record-container > a',
+			recordContentSelector: '.record',
 			counterSelector: '#countNotification',
 			getListMethodName: 'notificationList',
 			getRecordMethodName: 'getNotified',
 			dateTimeFieldName: 'CreationDate',
-			signOutButtonSelector: null, // here none; but should be given when site is under authentication
-			/* optinoal */
+			signOutButtonSelector: '#signout',
 			notificationOpenerSelector: '#countNotification',
+			/* optinoal */
+			//addAt: 'top', // add new notification at: 'top'/'bottom'
 			notificationPanelSelector: '.record-container',
 			onGetList: function(list) { console.log('Total: ' + list.length) },
 			onRecordArrival: function(obj) { console.log('Log ID: ' + obj.Id) }
@@ -21,7 +22,7 @@
 <div class="nofity-container">
 	<span id="countNotification" title="See notifications">00</span>
 	<div class="record-container">
-		<a target="_blank" href="/home/LogDetails/[[Id]]">
+		<a class="record" target="_blank" href="/home/LogDetails/[[Id]]">
 			<div class="summary">[[Summary]]</div>
 			<div class="first">[[User]]</div>
 			<div class="second">[[CreationDate]]</div>

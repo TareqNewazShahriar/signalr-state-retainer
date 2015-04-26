@@ -9,6 +9,7 @@ function notificationStateManager(options)
 	'use strict';
 
 	/* globals */
+	var addAt = { top:'top', bottom: 'bottom' }
 	var cons = {
 		dataDomClass: 'signalNotificationDom',
 		storeKey: 'signalNotificationData'
@@ -58,10 +59,13 @@ function notificationStateManager(options)
 		$.connection[options.signalrHubName].client[options.getRecordMethodName] = function(jsonObj)
 		{	
 			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
-			addItemToStoredData(record);
+			addItemToStoredData(record, options.addAt);
 			/* append that notification */
 			var html = createHtml(record);
-			$(html).prependTo($('.' + cons.dataDomClass).parent());
+			if(options.addAt == addAt.bottom)
+				$(html).appendTo($('.' + cons.dataDomClass).parent());
+			else
+				$(html).prependTo($('.' + cons.dataDomClass).parent());
 
 			if(options.counterSelector)
 				increamentNotificationCounter(1);
@@ -132,7 +136,7 @@ function notificationStateManager(options)
 	{
 		var jsonList = getStoredData(cons.storeKey);
 		if(jsonList)
-			jsonList.unshift(jsonObj);
+			options.addAt == addAt.bottom ? (jsonList.push(jsonObj)) : (jsonList.unshift(jsonObj));
 		storeData(cons.storeKey, jsonList);
 	}
 	

@@ -1,29 +1,40 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - SignalR Notification Management</title>
-    @Styles.Render("~/Content/css")
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - SignalR Notification Management</title>
+	@Styles.Render("~/Content/css")
 	<script src="~/Scripts/jquery-1.11.2.min.js"></script>
-	<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
-	<script src="~/signalr/hubs"></script>
-	<script src="~/Scripts/signalRNotificationStateManager.js"></script>
+	@if(Request.Cookies.Get(".ASPXAUTH") != null)
+	{			// we're just moking the authentication
+		<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+		<script src="~/signalr/hubs"></script>
+		<script src="~/Scripts/signalRNotificationStateManager.js"></script>
+	}
 </head>
 <body>
-	@Html.Partial("_NotificationPanel")
-	<br /><br />
-	<div class="navbar">
-        <span>@Html.ActionLink("Home", "Index", "Home")</span>
-		<span>@Html.ActionLink("About", "About", "Home")</span>
-		<span>@Html.ActionLink("Contact", "Contact", "Home")</span>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - SignalR Notification Management</p>
-        </footer>
-    </div>
+	@if(Request.Cookies.Get(".ASPXAUTH") != null)
+	{			// we're just moking the authentication
+		@Html.Partial("_NotificationPanel")
+		@Html.ActionLink("Sign-out", "SignOut", "Home", null, htmlAttributes: new { style = "float:right;", id="signout" })
+		<br /><br />
+		<div class="navbar">
+			<span>@Html.ActionLink("Home", "Index", "Home")</span>
+			<span>@Html.ActionLink("About", "About", "Home")</span>
+			<span>@Html.ActionLink("Contact", "Contact", "Home")</span>
+		</div>
+	}
+	else
+	{
+		@Html.ActionLink("Sign-in", "SignIn", "Home", null, htmlAttributes: new { style = "float:right;" })
+	}
+	<div class="container body-content">
+		@RenderBody()
+		<hr />
+		<footer>
+			<p>&copy; @DateTime.Now.Year - SignalR Notification Management</p>
+		</footer>
+	</div>
 </body>
 </html>

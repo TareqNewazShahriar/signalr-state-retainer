@@ -22,7 +22,7 @@ namespace SingnalRNotificationStateManager
 
 		private static void PopulateLogs()
 		{
-			int tot = 11;
+			int tot = 8;
 			for(int i = 1; i < tot; i++)
 			{
 				logs.Add(new Log() { Id = (tot - i), Summary = "Something happened " + (tot - i), User = "user" + (tot - i), CreationDate = DateTime.UtcNow.AddHours(i * -5) });

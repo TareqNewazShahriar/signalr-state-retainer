@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "SingIn";
+}
+
+<h2>SingIn</h2>
+
+<b>Mock login. Type anything in to signin.</b>
+
+@using(Html.BeginForm("SignIn", "Home"))
+{
+	@Html.ValidationSummary()
+	<table>
+		<tr>
+			<td>Username</td>
+			<td>@Html.TextBox("Username", "dhetteri")</td>
+		</tr>
+		<tr>
+			<td>Password</td>
+			<td>@Html.TextBox("password", "vuila gesi", new { type="password" })</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="submit" value="Submit" /></td>
+		</tr>
+	</table>
+}

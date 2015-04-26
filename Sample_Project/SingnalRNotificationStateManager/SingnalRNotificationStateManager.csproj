@@ -168,7 +168,9 @@
     <Content Include="Views\Shared\_NotificationPanel.cshtml" />
     <Content Include="Views\Home\LogDetails.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Home\SignIn.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
