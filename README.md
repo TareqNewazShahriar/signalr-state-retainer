@@ -17,7 +17,7 @@ public static void BroadcastFromServer(Log log)
 }
 ````
 
-* **Step 2 [optional]:** Also in your SignalR hub, add a method to return a list of notification list which wiil be called once by plugin at the beginning of the session. This method is optional. This will also return the the list converting to a Json array.
+* **Step 2 [optional]:** Also in your SignalR hub, add a method to return a list of notification list which wiil be called once by plugin at the beginning of the session. This method is optional. This will also return the list converting to a Json array.
 
 ```cs
 public dynamic notificationList(List<Log> logs)
@@ -29,16 +29,13 @@ public dynamic notificationList(List<Log> logs)
 
 ###### JS, Html Steps
 * **Steps 3**: Add an Html container to your desired place to render the data using the properties of the data.
-Suppose our record has these fields: Id, StudentName, RollNo, Address, CreationDate.
-So the HTML will be something like that:
+Suppose our record has those fields: Id, NotficationName, CreationDate. So write your HTML like this way:
 
 ```html
 <div class="record-container">
-	<a class="record" target="_blank" href="/home/LogDetails/[[Id]]">
-		<div class="summary">[[Summary]]</div>
-		<div class="first">[[User]]</div>
-		<div class="second">[[CreationDate]]</div>
-	</a>
+	<span>[[NotficationName]]</span>
+	<span>[[CreationDate]]</span>
+	<a href="/Notification/Details/[[Id]]">See Detail<a/>
 </div>
 ```
 
@@ -49,11 +46,11 @@ $(function()
 {
 	notificationStateManager({
 		signalrHubName: 'NotificationHub',
-		recordContentSelector: '.record',
-		counterSelector: '#countNotification',
 		getListMethodName: 'notificationList',
 		getRecordMethodName: 'getNotified',
 		dateTimeFieldName: 'CreationDate',
+		recordContentSelector: '.record',
+		counterSelector: '#countNotification',
 		signOutButtonSelector: '#signout',
 		notificationOpenerSelector: '#countNotification',
 		/* optinoal */
@@ -64,7 +61,6 @@ $(function()
 	});
 });
 ```
-
 
 
 ##### Plugin Parameter Description
@@ -83,10 +79,12 @@ getListMethodName: 'notificationList'
 ```
 
 * getRecordMethodName *(string)*: Name of the client-side js method you want the plugin to define so that you can call from SignalR code, when a new notification is available.
+
 * dateTimeFieldName *(string) / optional*: Tell the plugin your date-time property name. The value of this field will be shown in a certain format. For example: the object you're passing have those properties: Id, NotficationName, CreationDate. Then pass 'CreationDate' to that parameter option: 
 ```js
 dateTimeFieldName: 'CreationDate'.
 ```
+
 * recordContentSelector *(string)*: Now this option is about the HTML. This option is just about a DOM selector, but here I shall describe what this option is about; this option is about where to render the notification data of your HTML page. Design your HTML and tell the plugin where to render the property values. If you're familiar with AngularJS then you're familiar with this part too. Let's recall your object has properties of - Id, NotficationName, CreationDate. So write your HTML like this way:
 
 ```html
