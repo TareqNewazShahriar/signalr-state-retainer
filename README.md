@@ -5,7 +5,7 @@ Javascript plugin to manage the state of the SignalR realtime notifications betw
 
 Server-side C#/VB Steps:
 * **Step 1**: In your SignalR hub, add a method which will call the client method when a new notification will be available.
-Let's name the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with that name. This method will return the Json of the notification data. For example
+Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with that name. This method will return the Json of the notification data. For example
 
 ```cs
 public static void BroadcastFromServer(Log log)
