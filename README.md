@@ -39,7 +39,7 @@ Suppose our record has those fields: Id, NotficationName, CreationDate. So write
 </div>
 ```
 
-* **Step 4:** Call the plugin with necessary parameters. A sample call can be like this:
+* **Step 4:** Call the plugin with necessary parameter options. A sample call can be like this:
 
 ```javascript
 $(function()
