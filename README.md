@@ -107,7 +107,7 @@ counterSelector: '#countNotification'
 
 * signOutButtonSelector *(string) / optional*: Selector of the sign-out button or link. The time when user will click on the sign-out button all locally saved data will be deleted for safely. '#signout',
 ```js
-notificationOpenerSelector: '#countNotification',
+notificationOpenerSelector: '#countNotification'
 ```
 
 * addAt *(string) / optional*: Default value for this optino is *top*. If you want that new notification will be shown at bottom then pass 'bottom'.
@@ -121,17 +121,17 @@ notificationOpenerSelector: '#countNotification',
 * onGetList *(function) / optional*: Pass a JS callback function to execute after rendering the notification list at session start. This callback will be called with notification list so that you can leverage.
 ```js
 onGetList: function(list)
-	   {
-	   	console.log('Total: ' + list.length);
-	   }
+	{
+		console.log('Total: ' + list.length);
+	}
 ```
 
 * onRecordArrival *(function) / optional*: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data parameter.
 ```js
  onRecordArrival: function(obj)
- 		  {
- 		  	console.log('Log ID: ' + obj.Id);
- 		  }
+	{
+		console.log('Log ID: ' + obj.Id);
+	}
 ```
 
-*Feel free to issue any bug or if you want to have any additional feature.*
+**Feel free to issue any bug or if you need any additional feature.**
