@@ -3,7 +3,7 @@ This plugin helps you to retain all the notification or chat data on client sess
 
 Here are the quick steps (for nerds) of How to use the plugin-
 
-###### Server-side C#/VB Steps
+###### Server-side Steps
 * **Step 1:** In your SignalR hub, add a method which will call the client method when a new notification will be available.
 Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with that name. This method will return the Json of the notification data. For example
 
