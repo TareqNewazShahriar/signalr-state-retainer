@@ -69,7 +69,7 @@ The parameter contains 10 options and 2 events.
 
 **Options:**
 
-* signalrHubName *(string)*: Pass the name of your CS/VB class that implemented the SignalR Hub. For example:
+* signalrHubName *(string)*: Pass the name of your C#/VB class that implemented the SignalR Hub class. For example:
 ```js
 signalrHubName: 'NotificationHub'
 ```
