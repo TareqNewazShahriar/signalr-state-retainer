@@ -73,7 +73,7 @@ The parameter contains 10 options and 2 events.
 ```js
 signalrHubName: 'NotificationHub'
 ```
-* getListMethodName *(string) / optional*: Name of the SignalR server-side method which will be called at the beginning of the application session to get a list of notification/chat data you want the user to see when they just signed-in. For example: 
+* getListMethodName *(string) / optional*: Name of the SignalR server-side method which will be called at the beginning of the application session to get a list of notification/chat data you want the user to see when they will be signed-in. For example: 
 ```js
 getListMethodName: 'notificationList'
 ```
@@ -95,7 +95,7 @@ dateTimeFieldName: 'CreationDate'.
 </div>
 ```
 
-So now just pass the name of the CSS class name:
+So now just pass the the CSS class name:
 ```js
 recordContentSelector:'record-container'.
 ```
@@ -120,12 +120,18 @@ notificationOpenerSelector: '#countNotification',
 **2 Events:**
 * onGetList *(function) / optional*: Pass a JS callback function to execute after rendering the notification list at session start. This callback will be called with notification list so that you can leverage.
 ```js
-onGetList: function(list) { console.log('Total: ' + list.length) }
+onGetList: function(list)
+	   {
+	   	console.log('Total: ' + list.length);
+	   }
 ```
 
 * onRecordArrival *(function) / optional*: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data parameter.
 ```js
- function(obj) { console.log('Log ID: ' + obj.Id) }
+ onRecordArrival: function(obj)
+ 		  {
+ 		  	console.log('Log ID: ' + obj.Id);
+ 		  }
 ```
 
 *Feel free to issue any bug or if you want to have any additional feature.*
