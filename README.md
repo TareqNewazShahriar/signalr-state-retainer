@@ -1,7 +1,5 @@
 #### SignalR Notification State Manager
-This plugin helps you to retain all the notification or chat data on client sessionStorage and render those information after a page redirection or form post. Developers don't need to return it from the server on action executing or page redirection etc.
-
-The sample project have been hosted in appharbor - http://signalrstatemgr.apphb.com
+This plugin helps you to retain all the notification or chat data on client sessionStorage and render those information after a page redirection or form post. Developers don't need to return it from the server on action executing or page redirection etc. The sample application have been hosted in appharbor - http://signalrstatemgr.apphb.com
 
 Here are the quick steps (for nerds) of How to use the plugin-
 
