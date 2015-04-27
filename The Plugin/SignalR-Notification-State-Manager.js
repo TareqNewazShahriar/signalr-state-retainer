@@ -152,7 +152,7 @@ function notificationStateManager(options)
 		for(var key in record)
 		{
 			var val = record[key];
-			if(options.dateTimeFieldName == key)
+			if(options.dateTimeFieldName && options.dateTimeFieldName == key)
 				val = formatDateTime(record[key], false);
 			var reg = new RegExp('\\[\\[' + key + '\\]\\]', 'gim');
 			html = html.replace(reg, val); /* html replace removes all event bindings. since we're cloning so no problem */
