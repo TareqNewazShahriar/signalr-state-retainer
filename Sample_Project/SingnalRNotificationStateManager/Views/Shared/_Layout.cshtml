@@ -6,7 +6,7 @@
 	<title>@ViewBag.Title - SignalR Notification State Management</title>
 
 	<link href="~/Stylesheets/Site.css" rel="stylesheet" />
-	<script src="~/Scripts/jquery-1.11.2.min.js"></script>
+	<script src="~/Scripts/jquery-1.6.4.min.js"></script>
 	@if(Request.Cookies.Get(".ASPXAUTH") != null)
 	{			// we're just mocking the authentication
 		<script src="~/Scripts/jquery.signalR-2.1.1.min.js"></script>
@@ -19,8 +19,7 @@
 				{	
 					$.ajax({
 						type: "POST",
-						url: "/Home/NotifyClients?pageName=" + $('#notify').val(),
-						async: true
+						url: "/Home/NotifyClients?pageName=" + $('#notify').val()
 					});
 				});
 			});
