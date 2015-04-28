@@ -70,7 +70,7 @@ namespace SingnalRNotificationStateManager.Controllers
 		{
 			if(string.IsNullOrWhiteSpace(username))
 			{
-				ModelState.AddModelError("", "So you want to signin without a username! keep up!");
+				ModelState.AddModelError("", "So you want to signin without a username!");
 				ViewBag.uername = username;
 				ViewBag.password = password;
 				return View();
