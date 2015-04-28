@@ -4,13 +4,27 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>@ViewBag.Title - SignalR Notification Management</title>
-	@Styles.Render("~/Content/css")
+
+	<link href="~/Stylesheets/Site.css" rel="stylesheet" />
 	<script src="~/Scripts/jquery-1.11.2.min.js"></script>
 	@if(Request.Cookies.Get(".ASPXAUTH") != null)
 	{			// we're just mocking the authentication
 		<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
 		<script src="~/signalr/hubs"></script>
 		<script src="~/Scripts/signalRNotificationStateManager.js"></script>
+		<script type="text/javascript">
+			$(function()
+			{
+				$('#notify').click(function()
+				{	
+					$.ajax({
+						type: "POST",
+						url: "/Home/NotifyClients",
+						data: { pageName: $(this).val() }
+					});
+				});
+			});
+		</script>
 	}
 </head>
 <body>

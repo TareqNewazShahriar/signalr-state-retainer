@@ -12,19 +12,25 @@ namespace SingnalRNotificationStateManager.Controllers
 	{	
 		public ActionResult Index()
 		{
-			NotifyClients();
+			if(Request.Cookies.Get(".ASPXAUTH") == null)
+				return RedirectToAction("SignIn");
+
 			return View();
 		}
 
 		public ActionResult About()
 		{
-			NotifyClients();
+			if(Request.Cookies.Get(".ASPXAUTH") == null)
+				return RedirectToAction("SignIn");
+
 			return View();
 		}
 
 		public ActionResult Contact()
 		{
-			NotifyClients();
+			if(Request.Cookies.Get(".ASPXAUTH") == null)
+				return RedirectToAction("SignIn");
+
 			return View();
 		}
 
@@ -33,15 +39,16 @@ namespace SingnalRNotificationStateManager.Controllers
 			return View(LogList.Logs.FirstOrDefault(x=>x.Id==id));
 		}
 
-		private void NotifyClients()
+		public void NotifyClients(string pageName)
 		{
-			string action = RouteData.Values["action"].ToString();
-			var log = new Log() 
-			{	
-				Id = LogList.Logs.Count+1,
-				Summary = (action == "SingIn" ? User.Identity.Name + " logged-in"
-					: "Someone have hit the " + action),
-				User = User.Identity.Name,
+			if(Request.Cookies.Get(".ASPXAUTH") == null)
+				return;
+
+			var log = new Log()
+			{
+				Id = LogList.Logs.Count + 1,
+				Summary = "Click from " + pageName,
+				User = Request.Browser.Type,
 				CreationDate = DateTime.UtcNow
 			};
 			
@@ -61,10 +68,9 @@ namespace SingnalRNotificationStateManager.Controllers
 		[HttpPost]
 		public ActionResult SignIn(string username, string password)
 		{
-			NotifyClients();
 			if(string.IsNullOrWhiteSpace(username))
 			{
-				ModelState.AddModelError("", "No username!!! Pleeez type one.");
+				ModelState.AddModelError("", "So you want to signin without a username! keep up!");
 				ViewBag.uername = username;
 				ViewBag.password = password;
 				return View();
@@ -77,8 +83,7 @@ namespace SingnalRNotificationStateManager.Controllers
 		}
 
 		public ActionResult SignOut()
-		{
-			NotifyClients();
+		{	
 			FormsAuthentication.SignOut();
 			return RedirectToAction("SignIn");
 		}

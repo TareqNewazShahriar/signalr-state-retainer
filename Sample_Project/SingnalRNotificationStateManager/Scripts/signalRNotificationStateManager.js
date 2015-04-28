@@ -167,7 +167,7 @@ function notificationStateManager(options)
 		time = (date.getHours() % 12 || 12) +				/* 12 hour format */
 			':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) +	/* min with zero padding */
 			' ' + (date.getHours() < 12 ? 'AM' : 'PM');	/* AM / PM */
-		time += date.toDateString() == now.toDateString() ? '' : (timeDateIn2Lines ? '<br/>' : ' ') + date.toLocaleDateString();
+		time = (date.toDateString() == now.toDateString() ? '' : date.toLocaleDateString() + (timeDateIn2Lines ? '<br/>' : ' ')) + time;
 		return time;
 	}
 
@@ -180,7 +180,7 @@ function notificationStateManager(options)
 		{
 			var strJson, jsonList;
 			jsonList = typeof jsonData == 'string' ? jsonList = JSON.parse(jsonData) : jsonData;
-			strJson = escape(JSON.stringify(jsonList));
+			strJson = JSON.stringify(jsonList);
 		}
 		sessionStorage.setItem(key, strJson);
 	}
@@ -192,7 +192,7 @@ function notificationStateManager(options)
 		var jsonList = null;
 		var strJson = sessionStorage.getItem(key);
 		if(strJson)
-			jsonList = JSON.parse(unescape(strJson));
+			jsonList = JSON.parse(strJson);
 		
 		return jsonList;
 	}

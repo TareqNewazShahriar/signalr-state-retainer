@@ -5,7 +5,7 @@
 
 .nofity-container { background-color:white; font-size:11pt; position:absolute; z-index:2; }
 #countNotification { background-color:#000; color:white; border:1px #ff006e solid;
-					 border-radius:10px; font-weight:bold; min-width:10px;
+					 font-weight:bold; min-width:10px;
 					 padding:5px; cursor:pointer; }
 .record-container { border:2px silver solid; display:none; margin-top:6px; max-height:300px; overflow:auto;
 					width:300px; }
