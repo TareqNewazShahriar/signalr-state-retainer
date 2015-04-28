@@ -19,8 +19,7 @@
 				{	
 					$.ajax({
 						type: "POST",
-						url: "/Home/NotifyClients",
-						data: { pageName: $(this).val() }
+						url: "/Home/NotifyClients?pageName=" + $('#notify').val()
 					});
 				});
 			});
