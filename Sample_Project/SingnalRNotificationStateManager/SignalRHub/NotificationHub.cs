@@ -21,9 +21,10 @@ namespace SingnalRNotificationStateManager.SignalRHub
 			signalrHub.Clients.All.getNotified(jsonObj);
 		}
 
-		public dynamic notificationList()
-		{	
-			return new JavaScriptSerializer().Serialize(LogList.Logs.OrderByDescending(x=>x.Id).Take(5));
+		public string notificationList()
+		{
+			string jsonStr = new JavaScriptSerializer().Serialize(LogList.Logs.OrderByDescending(x => x.Id).Take(5));
+			return (jsonStr!=null? jsonStr : "");
 		}
 	}
 }
