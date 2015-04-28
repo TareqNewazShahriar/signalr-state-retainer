@@ -11,7 +11,7 @@ namespace SingnalRNotificationStateManager
 		private static List<Log> logs=new List<Log>();
 		public static List<Log> Logs
 		{
-			get 
+			get
 			{
 				if(logs.Count == 0)
 					PopulateLogs();
@@ -22,7 +22,7 @@ namespace SingnalRNotificationStateManager
 
 		private static void PopulateLogs()
 		{
-			int tot = 8;
+			int tot = 6;
 			for(int i = 1; i < tot; i++)
 			{
 				logs.Add(new Log() { Id = (tot - i), Summary = "Something happened " + (tot - i), User = "user" + (tot - i), CreationDate = DateTime.UtcNow.AddHours(i * -5) });

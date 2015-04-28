@@ -23,7 +23,7 @@ namespace SingnalRNotificationStateManager.SignalRHub
 
 		public dynamic notificationList()
 		{	
-			return new JavaScriptSerializer().Serialize(LogList.Logs.OrderByDescending(x=>x.Id).Take(10));
+			return new JavaScriptSerializer().Serialize(LogList.Logs.OrderByDescending(x=>x.Id).Take(5));
 		}
 	}
 }

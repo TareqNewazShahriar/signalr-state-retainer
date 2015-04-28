@@ -180,7 +180,7 @@ function notificationStateManager(options)
 		{
 			var strJson, jsonList;
 			jsonList = typeof jsonData == 'string' ? jsonList = JSON.parse(jsonData) : jsonData;
-			strJson = JSON.stringify(jsonList);
+			strJson = escape(JSON.stringify(jsonList));
 		}
 		sessionStorage.setItem(key, strJson);
 	}
@@ -192,7 +192,7 @@ function notificationStateManager(options)
 		var jsonList = null;
 		var strJson = sessionStorage.getItem(key);
 		if(strJson)
-			jsonList = JSON.parse(strJson);
+			jsonList = JSON.parse(unescape(strJson));
 		
 		return jsonList;
 	}
