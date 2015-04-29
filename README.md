@@ -136,7 +136,7 @@ onGetList: function(list)
 
 * onRecordArrival *(function) / optional*: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data parameter.
 ```js
- onRecordArrival: function(obj)
+onRecordArrival: function(obj)
 {
 	console.log('Log ID: ' + obj.Id);
 }
