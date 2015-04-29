@@ -121,25 +121,25 @@ notificationOpenerSelector: '#countNotification'
 * onSignalrInitialisation *(function) / optional*: Pass a function to execute at the time when the SignalR is ready. Develolper's can use this callback to make any hidden or disabled DOM visible/enable that needs SignalR.
 ```js
 onSignalrInitialisation: function()
-						 {
-							$('#sendMsg').removeAttr('disabled');
-						 }
+{
+	$('#sendMsg').removeAttr('disabled');
+}
 ```
 
 * onGetList *(function) / optional*: Pass a function to execute after rendering the notification list at session start. This callback will be called with notification list so that you can leverage.
 ```js
 onGetList: function(list)
-	{
-		console.log('Total: ' + list.length);
-	}
+{
+	console.log('Total: ' + list.length);
+}
 ```
 
 * onRecordArrival *(function) / optional*: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data parameter.
 ```js
  onRecordArrival: function(obj)
-	{
-		console.log('Log ID: ' + obj.Id);
-	}
+{
+	console.log('Log ID: ' + obj.Id);
+}
 ```
 
 **Feel free to create issues for any bug or additional useful feature.**
