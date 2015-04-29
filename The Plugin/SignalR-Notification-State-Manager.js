@@ -32,7 +32,7 @@ function notificationStateManager(options)
 		var dom = $(options.recordContentSelector);
 		$(dom).hide(); /* highest priority */
 		$(dom).addClass(cons.dataDomClass);
-		vars.rendered = getStateAtPageLoad(); /* 2nd highest priority. if */
+		getStateAtPageLoad(); /* 2nd highest priority. if */
 		/* removed stored data if signed out */
 		if(options.signOutButtonSelector)
 		{
