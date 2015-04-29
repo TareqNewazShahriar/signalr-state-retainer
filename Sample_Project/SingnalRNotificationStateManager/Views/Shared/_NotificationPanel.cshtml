@@ -13,6 +13,14 @@
 			/* optinoal */
 			//addAt: 'top', // add new notification at: 'top'/'bottom'
 			notificationPanelSelector: '.record-container',
+			onSignalrInitialisation: function() /* calls after signalr initialisation. signalr takes much time to initiate */
+			{
+				var btn = $('#notify');
+				$(btn).removeAttr('disabled');
+				var txt = $(btn).html();
+				if(txt.indexOf('(')>0)
+					$(btn).html(txt.substr(0, txt.indexOf('(')));
+			},
 			onGetList: function(list) { console.log('Total: ' + list.length) },
 			onRecordArrival: function(obj) { console.log('Log ID: ' + obj.Id) }
 		});

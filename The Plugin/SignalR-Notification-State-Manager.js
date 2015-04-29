@@ -89,6 +89,9 @@ function notificationStateManager(options)
 		}
 		$.connection.hub.start().done(function()
 		{
+			if(typeof options.onSignalrInitialisation == 'function') /* plugin callback on signalr init */
+				options.onSignalrInitialisation();
+
 			if(!vars.rendered)
 			{
 				if(options.getListMethodName && !getStoredData(cons.storeKey)) /* if no data found */
@@ -118,8 +121,9 @@ function notificationStateManager(options)
 	function getStateAtPageLoad()
 	{
 		var jsonList = getStoredData(cons.storeKey);
-		if(!jsonList) return false; /* nothing to render, return */
-
+		if(!jsonList) return; /* nothing to render, return */
+		else vars.rendered = true; /* if session data found immediately flat it */
+		
 		var dom;
 		for(var i=0; i<jsonList.length; i++)
 		{
@@ -129,7 +133,6 @@ function notificationStateManager(options)
 
 		if(options.counterSelector)
 			increamentNotificationCounter(jsonList.length);
-		return true;
 	}
 
 	function increamentNotificationCounter(i)
