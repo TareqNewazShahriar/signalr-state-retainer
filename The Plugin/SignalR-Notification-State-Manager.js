@@ -10,25 +10,29 @@ function notificationStateManager(options)
 	'use strict';
 
 	/* globals */
-	var addAt = { top:'top', bottom: 'bottom' }
+	var addAt = { top: 'top', bottom: 'bottom' }
 	var cons = {
+		pluginInit: new Date(),
+		maxWait: 100000,
 		dataDomClass: 'signalNotificationDom',
 		storeKey: 'signalNotificationData'
 	}
+	var vars = { rendered: false, pInit:null }
 
 	/* at dom ready */
 	$(function()
 	{
 		pluginInitialisation();
-		notificationInitialisation();
+		vars.pInit = setInterval(notificationInitialisation, 500);
 	});
 
 	/* calls at initialisation */
 	function pluginInitialisation()
-	{	
+	{
 		var dom = $(options.recordContentSelector);
 		$(dom).hide(); /* highest priority */
 		$(dom).addClass(cons.dataDomClass);
+		vars.rendered = getStateAtPageLoad(); /* 2nd highest priority. if */
 		/* removed stored data if signed out */
 		if(options.signOutButtonSelector)
 		{
@@ -57,6 +61,15 @@ function notificationStateManager(options)
 
 	function notificationInitialisation()
 	{
+		if(!$.connection)
+		{
+			if(new Date() - cons.pluginInit > cons.maxWait) /* if signalr take too much time to load, cancel back-task */
+				clearInterval(vars.pInit);
+			return; /* signalr not ready yet */
+		}
+		else
+			clearInterval(vars.pInit); /* ready */
+
 		$.connection[options.signalrHubName].client[options.getRecordMethodName] = function(jsonObj)
 		{	
 			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
@@ -76,10 +89,13 @@ function notificationStateManager(options)
 		}
 		$.connection.hub.start().done(function()
 		{
-			if(options.getListMethodName && !getStoredData(cons.storeKey)) /* if no data found */
-				getList();
-			else
-				getStateAtPageLoad();
+			if(!vars.rendered)
+			{
+				if(options.getListMethodName && !getStoredData(cons.storeKey)) /* if no data found */
+					getList();
+				else
+					getStateAtPageLoad();
+			}
 		})
 	}
 
@@ -102,7 +118,7 @@ function notificationStateManager(options)
 	function getStateAtPageLoad()
 	{
 		var jsonList = getStoredData(cons.storeKey);
-		if(!jsonList) return; /* nothing to render, return */
+		if(!jsonList) return false; /* nothing to render, return */
 
 		var dom;
 		for(var i=0; i<jsonList.length; i++)
@@ -113,6 +129,7 @@ function notificationStateManager(options)
 
 		if(options.counterSelector)
 			increamentNotificationCounter(jsonList.length);
+		return true;
 	}
 
 	function increamentNotificationCounter(i)
@@ -180,7 +197,7 @@ function notificationStateManager(options)
 		{
 			var strJson, jsonList;
 			jsonList = typeof jsonData == 'string' ? jsonList = JSON.parse(jsonData) : jsonData;
-			strJson = JSON.stringify(jsonList);
+			strJson = escape(JSON.stringify(jsonList));
 		}
 		sessionStorage.setItem(key, strJson);
 	}
@@ -192,7 +209,7 @@ function notificationStateManager(options)
 		var jsonList = null;
 		var strJson = sessionStorage.getItem(key);
 		if(strJson)
-			jsonList = JSON.parse(strJson);
+			jsonList = JSON.parse(unescape(strJson));
 		
 		return jsonList;
 	}
