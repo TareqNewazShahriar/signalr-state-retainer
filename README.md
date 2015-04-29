@@ -55,7 +55,7 @@ $(function()
 		notificationOpenerSelector: '#countNotification',
 		notificationPanelSelector: '.record-container',
 		// addAt: 'top', // add new notification at: 'top'/'bottom'
-		onSignalrInitialisation: function(){ $('#notify').removeAttr('disabled'); },
+		onSignalrInitialisation: function(){ $('#sendMsg').removeAttr('disabled'); },
 		onGetList: function(list) { console.log('Total: ' + list.length) },
 		onRecordArrival: function(obj) { console.log('Log ID: ' + obj.Id) }
 	});
