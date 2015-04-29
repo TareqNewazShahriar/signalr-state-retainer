@@ -65,7 +65,7 @@ $(function()
 
 ##### Plugin Parameter Description
 
-The parameter contains 10 options and 2 events.
+The parameter contains 10 options and 3 events.
 
 **Options:**
 
@@ -117,8 +117,16 @@ notificationOpenerSelector: '#countNotification'
  notificationPanelSelector: '.record-container'
 ```
 
-**2 Events:**
-* onGetList *(function) / optional*: Pass a JS callback function to execute after rendering the notification list at session start. This callback will be called with notification list so that you can leverage.
+**3 Events:**
+* onSignalrInitialisation *(function) / optional*: Pass a function to execute at the time when the SignalR is ready. Develolper's can use this callback to make any hidden or disabled DOM visible/enable that needs SignalR.
+```js
+onSignalrInitialisation: function()
+						 {
+							$('#sendMsg').removeAttr('disabled');
+						 }
+```
+
+* onGetList *(function) / optional*: Pass a function to execute after rendering the notification list at session start. This callback will be called with notification list so that you can leverage.
 ```js
 onGetList: function(list)
 	{
@@ -134,4 +142,4 @@ onGetList: function(list)
 	}
 ```
 
-**Feel free to issue any bug or if you need any additional feature.**
+**Feel free to create issues for any bug or additional useful feature.**
