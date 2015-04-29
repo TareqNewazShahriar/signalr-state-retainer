@@ -53,9 +53,9 @@ $(function()
 		counterSelector: '#countNotification',
 		signOutButtonSelector: '#signout',
 		notificationOpenerSelector: '#countNotification',
-		/* optinoal */
-		//addAt: 'top', // add new notification at: 'top'/'bottom'
 		notificationPanelSelector: '.record-container',
+		// addAt: 'top', // add new notification at: 'top'/'bottom'
+		onSignalrInitialisation: function(){ $('#notify').removeAttr('disabled'); },
 		onGetList: function(list) { console.log('Total: ' + list.length) },
 		onRecordArrival: function(obj) { console.log('Log ID: ' + obj.Id) }
 	});
@@ -107,15 +107,20 @@ counterSelector: '#countNotification'
 
 * signOutButtonSelector *(string) / optional*: Selector of the sign-out button or link. The time when user will click on the sign-out button all locally saved data will be deleted for safely. '#signout',
 ```js
-notificationOpenerSelector: '#countNotification'
+signOutButtonSelector: '#signout'
 ```
 
-* addAt *(string) / optional*: Default value for this optino is *top*. If you want that new notification will be shown at bottom then pass 'bottom'.
+* notificationOpenerSelector *(string) / optional*: Selector of the DOM element that will be used to open the notification panel on onclick. Generally the notification counter DOM can be used for that.
+```js
+notificationOpenerSelector: '#countNotification'
+```
 
 * notificationPanelSelector *(string) / optional*: If you want that the notification panel will be opened on click at notification counter DOM then pass the selector of the notification panel container.
 ```js
  notificationPanelSelector: '.record-container'
 ```
+
+* addAt *(string) / optional*: Default value for this optino is *top*. If you want that new notification will be shown at bottom then pass 'bottom'.
 
 **3 Events:**
 * onSignalrInitialisation *(function) / optional*: Pass a function to execute at the time when the SignalR is ready. Develolper's can use this callback to make any hidden or disabled DOM visible/enable that needs SignalR.
