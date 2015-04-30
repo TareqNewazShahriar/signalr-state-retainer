@@ -10,20 +10,20 @@ function notificationStateManager(options)
 	'use strict';
 
 	/* globals */
-	var addAt = { top: 'top', bottom: 'bottom' }
 	var cons = {
 		pluginInit: new Date(),
 		maxWait: 100000,
 		dataDomClass: 'signalNotificationDom',
-		storeKey: 'signalNotificationData'
+		storeKey: 'signalNotificationData',
+		addAt : { top: 'top', bottom: 'bottom' }
 	}
-	var vars = { rendered: false, pInit:null }
+	var vars = { rendered: false }
 
 	/* at dom ready */
 	$(function()
 	{
 		pluginInitialisation();
-		vars.pInit = setInterval(notificationInitialisation, 500);
+		notificationInitialisation();
 	});
 
 	/* calls at initialisation */
@@ -61,22 +61,13 @@ function notificationStateManager(options)
 
 	function notificationInitialisation()
 	{
-		if(!$.connection)
-		{
-			if(new Date() - cons.pluginInit > cons.maxWait) /* if signalr take too much time to load, cancel back-task */
-				clearInterval(vars.pInit);
-			return; /* signalr not ready yet */
-		}
-		else
-			clearInterval(vars.pInit); /* ready */
-
 		$.connection[options.signalrHubName].client[options.getRecordMethodName] = function(jsonObj)
 		{	
 			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
 			addItemToStoredData(record, options.addAt);
 			/* append that notification */
 			var html = createHtml(record);
-			if(options.addAt == addAt.bottom)
+			if(options.addAt == cons.addAt.bottom)
 				$(html).appendTo($('.' + cons.dataDomClass).parent());
 			else
 				$(html).prependTo($('.' + cons.dataDomClass).parent());
@@ -92,13 +83,8 @@ function notificationStateManager(options)
 			if(typeof options.onSignalrInitialisation == 'function') /* plugin callback on signalr init */
 				options.onSignalrInitialisation();
 
-			if(!vars.rendered)
-			{
-				if(options.getListMethodName && !getStoredData(cons.storeKey)) /* if no data found */
-					getList();
-				else
-					getStateAtPageLoad();
-			}
+			if(options.getListMethodName && !vars.rendered && !getStoredData(cons.storeKey)) /* if no data found */
+				getList();
 		})
 	}
 
@@ -153,11 +139,11 @@ function notificationStateManager(options)
 		}
 	}
 
-	function addItemToStoredData(jsonObj)
+	function addItemToStoredData(jsonObj, addat)
 	{
 		var jsonList = getStoredData(cons.storeKey);
 		if(jsonList)
-			options.addAt == addAt.bottom ? (jsonList.push(jsonObj)) : (jsonList.unshift(jsonObj));
+			addat == cons.addAt.bottom ? (jsonList.push(jsonObj)) : (jsonList.unshift(jsonObj));
 		storeData(cons.storeKey, jsonList);
 	}
 	

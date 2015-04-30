@@ -10,15 +10,21 @@
 			dateTimeFieldName: 'CreationDate',
 			signOutButtonSelector: '#signout',
 			notificationOpenerSelector: '#countNotification',
-			/* optinoal */
-			//addAt: 'top', // add new notification at: 'top'/'bottom'
+			// addAt: 'bottom', // add new notification at: 'top'/'bottom'
 			notificationPanelSelector: '.record-container',
+			/* events */
 			onSignalrInitialisation: function() /* calls after signalr initialisation */
 			{
 				$('#notify').removeAttr('disabled');
 			},
-			onGetList: function(list) { console.log('Total: ' + list.length) },
-			onRecordArrival: function(obj) { console.log('Log ID: ' + obj.Id) }
+			onGetList: function(list)
+			{
+				console.log('Total ' + list.length + ' records have returned from the server.');
+			},
+			onRecordArrival: function(obj)
+			{
+				console.log('New data have come.');
+			}
 		});
 	});
 </script>

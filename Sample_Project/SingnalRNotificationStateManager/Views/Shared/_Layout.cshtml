@@ -3,15 +3,15 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>@ViewBag.Title - SignalR Notification State Management</title>
+	<title>@ViewBag.Title - SignalR State Management</title>
 
 	<link href="~/Stylesheets/Site.css" rel="stylesheet" />
 	<script src="~/Scripts/jquery-1.6.4.min.js"></script>
 	@if(Request.Cookies.Get(".ASPXAUTH") != null)
 	{			// we're just mocking the authentication
-		<script src="~/Scripts/signalRNotificationStateManager.js"></script>
 		<script src="~/Scripts/jquery.signalR-2.1.1.min.js"></script>
 		<script src="~/signalr/hubs"></script>
+		<script src="~/Scripts/signalRNotificationStateManager.js"></script>
 		<script type="text/javascript">
 			$(function()
 			{
@@ -46,7 +46,7 @@
 		@RenderBody()
 		<hr />
 		<footer>
-			<p>&copy; @DateTime.Now.Year - SignalR Notification State Management</p>
+			<p>&copy; @DateTime.Now.Year - SignalR State Management</p>
 		</footer>
 	</div>
 </body>
