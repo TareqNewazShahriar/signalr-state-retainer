@@ -1,5 +1,5 @@
 #### SignalR Notification State Manager
-This plugin helps you to retain all the notification or chat data on client sessionStorage and render those information after a page redirection or form post. Developers don't need to return it from the server on action executing or page redirection etc. The sample application have been hosted in appharbor - http://signalrstatemgr.apphb.com
+This plugin helps you to retain all the notification or chat data on client and render those information after page redirection or form post. Developers don't need to return those data from the server every time. The sample application have been hosted in appharbor - http://signalrstatemgr.apphb.com.
 
 Here are the quick steps (for nerds) of How to use the plugin-
 
@@ -8,6 +8,8 @@ Here are the quick steps (for nerds) of How to use the plugin-
 Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with that name. This method will return the Json of the notification data. For example
 
 ```cs
+using System.Web.Script.Serialization;
+
 public static void BroadcastFromServer(Log log)
 {
 	var jsonObj = new JavaScriptSerializer().Serialize(new { log.Id, log.Summary, log.User, log.CreationDate });
@@ -17,19 +19,25 @@ public static void BroadcastFromServer(Log log)
 }
 ````
 
-* **Step 2 [optional]:** Also in your SignalR hub, add a method to return a list of notification list which wiil be called once by plugin at the beginning of the session. This method is optional. This will also return the list converting to a Json array.
+* **Step 2 [optional]:** Also in your SignalR hub, add a method to return a list of notification which will be called once by the plugin at the beginning of the session. This method is optional. This method will also return the list converting to a Json array.
 
 ```cs
-public dynamic notificationList(List<Log> logs)
+public string notificationList(List<Log> logs)
 {	
-	return new JavaScriptSerializer().Serialize(logs.OrderByDescending(x=>x.Id).Take(10));
+	return new JavaScriptSerializer().Serialize(logs.OrderByDescending(x=>x.Id).Take(5));
 }
 ````
 
 
 ###### JS, Html Steps
-* **Steps 3**: Add an Html container to your desired place to render the data using the properties of the data.
-Suppose our record has those fields: Id, NotficationName, CreationDate. So write your HTML like this way:
+* **Steps 3**: Add the plugin after SignalR scripts-
+```html
+<script src="~/Scripts/jquery.signalR-2.1.1.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/signalRNotificationStateManager.js"></script>
+```
+
+* **Steps 4**: Add an Html container to your desired place to render the data using the properties of the notification data. For example, notification model has those fields: Id, NotficationName, CreationDate. So write your HTML like this:
 
 ```html
 <div class="record-container">
@@ -39,7 +47,7 @@ Suppose our record has those fields: Id, NotficationName, CreationDate. So write
 </div>
 ```
 
-* **Step 4:** Call the plugin with necessary parameter options. A sample call can be like this:
+* **Step 5:** Call the plugin with necessary parameter options. A sample call can be like this:
 
 ```javascript
 $(function()
@@ -54,7 +62,7 @@ $(function()
 		signOutButtonSelector: '#signout',
 		notificationOpenerSelector: '#countNotification',
 		notificationPanelSelector: '.record-container',
-		// addAt: 'top', // add new notification at: 'top'/'bottom'
+		addAt: 'top', // 'top'/'bottom'
 		onSignalrInitialisation: function(){ $('#sendMsg').removeAttr('disabled'); },
 		onGetList: function(list) { console.log('Total: ' + list.length) },
 		onRecordArrival: function(obj) { console.log('Log ID: ' + obj.Id) }
@@ -73,7 +81,7 @@ The parameter contains 10 options and 3 events.
 ```js
 signalrHubName: 'NotificationHub'
 ```
-* getListMethodName *(string) / optional*: Name of the SignalR server-side method which will be called at the beginning of the application session to get a list of notification/chat data you want the user to see when they will be signed-in. For example: 
+* getListMethodName *(string) / optional*: Name of the SignalR server-side method which will be called at the beginning of the application session to get a list of notification/chat data you want the user to see when they will be signed-in. For example:
 ```js
 getListMethodName: 'notificationList'
 ```
@@ -82,7 +90,7 @@ getListMethodName: 'notificationList'
 
 * dateTimeFieldName *(string) / optional*: Tell the plugin your date-time property name. The value of this field will be shown in a certain format. For example: the object you're passing have those properties: Id, NotficationName, CreationDate. Then pass 'CreationDate' to that parameter option: 
 ```js
-dateTimeFieldName: 'CreationDate'.
+dateTimeFieldName: 'CreationDate'
 ```
 
 * recordContentSelector *(string)*: Now this option is about the HTML. This option is just about a DOM selector, but here I shall describe what this option is about; this option is about where to render the notification data of your HTML page. Design your HTML and tell the plugin where to render the property values. If you're familiar with AngularJS then you're familiar with this part too. Let's recall your object has properties of - Id, NotficationName, CreationDate. So write your HTML like this way:
@@ -97,7 +105,7 @@ dateTimeFieldName: 'CreationDate'.
 
 So now just pass the the CSS class name:
 ```js
-recordContentSelector:'record-container'.
+recordContentSelector:'record-container'
 ```
 
 * counterSelector *(string) / optional*: Pass the selector of the DOM where you want to show the notification counter to inform the user that how many notifications are available. 
@@ -135,15 +143,15 @@ onSignalrInitialisation: function()
 ```js
 onGetList: function(list)
 {
-	console.log('Total: ' + list.length);
+	console.log('Total ' + list.length + ' records have returned from the server.');
 }
 ```
 
-* onRecordArrival *(function) / optional*: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data parameter.
+* onRecordArrival *(function) / optional*: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data through parameter.
 ```js
 onRecordArrival: function(obj)
 {
-	console.log('Log ID: ' + obj.Id);
+	console.log('New data have come.');
 }
 ```
 
