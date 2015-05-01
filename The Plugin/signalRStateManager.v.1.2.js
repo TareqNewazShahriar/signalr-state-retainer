@@ -1,5 +1,5 @@
 ﻿/* 
- * SignalR State Manager v1.0.1
+ * SignalR State Manager
  * Released under Apache License
  * This plugin needs jQuery [http://www.jquery.com], just like SignalR.
  * Date: Thu Apr 16 2015 00:43:05 GMT+0600 (Bangladesh Standard Time)
@@ -29,7 +29,7 @@ function signalrStateManager(options)
 	/* calls at initialisation */
 	function pluginInitialisation()
 	{
-		var dom = $(options.recordContentSelector);
+		var dom = $(options.recordTemplateSelector);
 		$(dom).hide(); /* highest priority */
 		$(dom).addClass(cons.dataDomClass);
 		getStateAtPageLoad(); /* 2nd highest priority. if */
@@ -42,18 +42,18 @@ function signalrStateManager(options)
 			});
 		}
 		/* show/hide notification panel */
-		if(options.notificationOpenerSelector && options.notificationPanelSelector)
+		if(options.panelOpenerSelector && options.panelSelector)
 		{	
 			$(document).click(function(e)
 			{
 				var clickedDom = $(e.target);
-				if(clickedDom[0] == $(options.notificationOpenerSelector)[0])
-					$(options.notificationPanelSelector).slideToggle("fast");
-				else if(clickedDom.parents(options.notificationPanelSelector).length == 0
-					&& clickedDom[0] != $(options.notificationPanelSelector)[0]
-					&& $(options.notificationPanelSelector).css('display') != 'none')
+				if(clickedDom[0] == $(options.panelOpenerSelector)[0])
+					$(options.panelSelector).slideToggle("fast");
+				else if(clickedDom.parents(options.panelSelector).length == 0
+					&& clickedDom[0] != $(options.panelSelector)[0]
+					&& $(options.panelSelector).css('display') != 'none')
 				{
-					$(options.notificationPanelSelector).slideUp("fast");
+					$(options.panelSelector).slideUp("fast");
 				}
 			});
 		}
@@ -61,7 +61,7 @@ function signalrStateManager(options)
 
 	function notificationInitialisation()
 	{
-		$.connection[options.signalrHubName].client[options.getRecordMethodName] = function(jsonObj)
+		$.connection[options.signalrHubName].client[options.getNotifiedMethodName] = function(jsonObj)
 		{	
 			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
 			addItemToStoredData(record, options.addAt);
@@ -75,13 +75,13 @@ function signalrStateManager(options)
 			if(options.counterSelector)
 				increamentNotificationCounter(1);
 
-			if(typeof options.onRecordArrival == 'function')
-				options.onRecordArrival(record);
+			if(typeof options.onNotificationArrival == 'function')
+				options.onNotificationArrival(record);
 		}
 		$.connection.hub.start().done(function()
 		{
-			if(typeof options.onSignalrInitialisation == 'function') /* plugin callback on signalr init */
-				options.onSignalrInitialisation();
+			if(typeof options.onSignalrInit == 'function') /* plugin callback on signalr init */
+				options.onSignalrInit();
 
 			if(options.getListMethodName && !vars.rendered && !getStoredData(cons.storeKey)) /* if no data found */
 				getList();

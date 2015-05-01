@@ -3,17 +3,17 @@
 	{
 		signalrStateManager({
 			signalrHubName: 'NotificationHub',
-			recordContentSelector: '.record',
-			counterSelector: '#countNotification',
 			getListMethodName: 'notificationList',
-			getRecordMethodName: 'getNotified',
+			getNotifiedMethodName: 'getNotified',
+			recordTemplateSelector: '.record-template',
 			dateTimeFieldName: 'CreationDate',
+			counterSelector: '#countNotification',
+			panelSelector: '.record-container',
+			panelOpenerSelector: '#countNotification',
 			signOutButtonSelector: '#signout',
-			notificationOpenerSelector: '#countNotification',
-			// addAt: 'bottom', // add new notification at: 'top'/'bottom'
-			notificationPanelSelector: '.record-container',
+			// addAt: 'bottom',
 			/* events */
-			onSignalrInitialisation: function() /* calls after signalr initialisation */
+			onSignalrInit: function() /* calls after signalr initialisation */
 			{
 				$('#notify').removeAttr('disabled');
 			},
@@ -21,7 +21,7 @@
 			{
 				console.log('Total ' + list.length + ' records have returned from the server.');
 			},
-			onRecordArrival: function(obj)
+			onNotificationArrival: function(obj)
 			{
 				console.log('New data have come.');
 			}
@@ -32,7 +32,7 @@
 <div class="nofity-container">
 	<span id="countNotification" title="See notifications">-</span>
 	<div class="record-container">
-		<a class="record" target="_blank" href="/home/LogDetails/[[Id]]">
+		<a class="record-template" target="_blank" href="/home/LogDetails/[[Id]]">
 			<div class="summary">[[Summary]]</div>
 			<div class="first">[[User]]</div>
 			<div class="second">[[CreationDate]]</div>
