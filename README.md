@@ -47,7 +47,7 @@ public string notificationList(List<Log> logs)
 </div>
 ```
 
-* **Step 5:** Call the plugin with necessary parameter options. A sample call can be like this:
+* **Step 5:** Call the plugin with necessary parameter options. A sample call was shown below. Parameter options have been explained next to it.
 
 ```javascript
 $(function()
