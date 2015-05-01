@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
-using SingnalRNotificationStateManager.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Script.Serialization;
+using SignalRStateManager.Models;
 
-namespace SingnalRNotificationStateManager.SignalRHub
+namespace SignalRStateManager.SignalRHub
 {
 	// your hub name will be camel-cased in JS. To customise the JS hub name, use HubName attribute
 	[HubName("NotificationHub")]

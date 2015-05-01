@@ -1,10 +1,8 @@
-﻿using SingnalRNotificationStateManager.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using SignalRStateManager.Models;
 
-namespace SingnalRNotificationStateManager
+namespace SignalRStateManager
 {
 	public static class LogList
 	{	

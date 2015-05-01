@@ -1,11 +1,11 @@
 ﻿/* 
- * SignalR Notification State Manager v1.0.1
+ * SignalR State Manager v1.0.1
  * Released under Apache License
  * This plugin needs jQuery [http://www.jquery.com], just like SignalR.
  * Date: Thu Apr 16 2015 00:43:05 GMT+0600 (Bangladesh Standard Time)
  */
 
-function notificationStateManager(options)
+function signalrStateManager(options)
 {
 	'use strict';
 
