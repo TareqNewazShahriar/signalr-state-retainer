@@ -12,7 +12,6 @@ function signalrStateManager(options)
 	/* globals */
 	var cons = {
 		pluginInit: new Date(),
-		maxWait: 100000,
 		dataDomClass: 'signalNotificationDom',
 		storeKey: 'signalNotificationData',
 		addAt : { top: 'top', bottom: 'bottom' }
