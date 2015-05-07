@@ -14,7 +14,7 @@ function signalrStateManager(options)
 		pluginInit: new Date(),
 		dataDomClass: 'signalNotificationDom',
 		storeKey: 'signalNotificationData',
-		addAt : { top: 'top', bottom: 'bottom' }
+		addAt: { top: 'top', bottom: 'bottom' }
 	}
 	var vars = { rendered: false }
 
@@ -42,7 +42,7 @@ function signalrStateManager(options)
 		}
 		/* show/hide notification panel */
 		if(options.panelOpenerSelector && options.panelSelector)
-		{	
+		{
 			$(document).click(function(e)
 			{
 				var clickedDom = $(e.target);
@@ -61,7 +61,7 @@ function signalrStateManager(options)
 	function notificationInitialisation()
 	{
 		$.connection[options.signalrHubName].client[options.getNotifiedMethodName] = function(jsonObj)
-		{	
+		{
 			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
 			addItemToStoredData(record, options.addAt);
 			/* append that notification */
@@ -108,9 +108,9 @@ function signalrStateManager(options)
 		var jsonList = getStoredData(cons.storeKey);
 		if(!jsonList) return; /* nothing to render, return */
 		else vars.rendered = true; /* if session data found immediately flat it */
-		
+
 		var dom;
-		for(var i=0; i<jsonList.length; i++)
+		for(var i = 0; i < jsonList.length; i++)
 		{
 			dom = createHtml(jsonList[i]);
 			$(dom).appendTo($('.' + cons.dataDomClass).parent());
@@ -143,9 +143,11 @@ function signalrStateManager(options)
 		var jsonList = getStoredData(cons.storeKey);
 		if(jsonList)
 			addat == cons.addAt.bottom ? (jsonList.push(jsonObj)) : (jsonList.unshift(jsonObj));
+		else
+			jsonList = [jsonObj];
 		storeData(cons.storeKey, jsonList);
 	}
-	
+
 	function createHtml(record)
 	{
 		/* clone the record render dom */
@@ -167,7 +169,7 @@ function signalrStateManager(options)
 
 	function formatDateTime(time, timeDateIn2Lines)
 	{
-		var date = time.indexOf('Date(')>=0? new Date(parseInt(time.slice(6,-2))) : new Date(time + ' GMT+0000');
+		var date = time.indexOf('Date(') >= 0 ? new Date(parseInt(time.slice(6, -2))) : new Date(time + ' GMT+0000');
 		var now = new Date();
 		time = (date.getHours() % 12 || 12) +				/* 12 hour format */
 			':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) +	/* min with zero padding */
@@ -198,7 +200,7 @@ function signalrStateManager(options)
 		var strJson = sessionStorage.getItem(key);
 		if(strJson)
 			jsonList = JSON.parse(unescape(strJson));
-		
+
 		return jsonList;
 	}
 }
