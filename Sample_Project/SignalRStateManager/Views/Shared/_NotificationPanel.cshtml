@@ -10,8 +10,9 @@
 			counterSelector: '#countNotification',
 			panelSelector: '.record-container',
 			panelOpenerSelector: '#countNotification',
+			itemRemoverSelector: '.record-template .third',
 			signOutButtonSelector: '#signout',
-			// addAt: 'bottom',
+			//addAt: 'bottom',
 			/* events */
 			onSignalrInit: function() /* calls after signalr initialisation */
 			{
@@ -24,6 +25,10 @@
 			onNotificationArrival: function(obj)
 			{
 				console.log('New data have come.');
+			},
+			onItemRemoval: function(removedItem)
+			{
+				console.log('Flag the removed item (ID-' + removedItem.Id + ') as read/removed on Server. You\'ve got my idea, right!');
 			}
 		});
 	});
@@ -32,10 +37,13 @@
 <div class="nofity-container">
 	<span id="countNotification" title="See notifications">-</span>
 	<div class="record-container">
-		<a class="record-template" target="_blank" href="/home/LogDetails/[[Id]]">
-			<div class="summary">[[Summary]]</div>
-			<div class="first">[[User]]</div>
-			<div class="second">[[CreationDate]]</div>
-		</a>
+		<div class="record-template">
+			<a target="_blank" href="/home/LogDetails/[[Id]]">
+				<div class="summary">[[Summary]]</div>
+				<div class="first">[[User]]</div>
+				<div class="second">[[CreationDate]]</div>
+			</a>
+			<div class="third">[x]</div>
+		</div>
 	</div>
 </div>

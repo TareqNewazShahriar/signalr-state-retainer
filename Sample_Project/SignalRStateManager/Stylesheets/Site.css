@@ -10,8 +10,11 @@
 .record-container { border:2px silver solid; display:none; margin-top:6px; max-height:300px; overflow:auto;
 					width:300px; }
 .record-container ul { list-style-type:none; }
-.record-container > a { clear:both; margin-left:0px; padding-left:0px; float:left; width:98%; border:1px solid white; border-bottom:1px solid gainsboro; }
+.record-template { clear:both; margin-left:0px; padding-left:0px; float:left; width:98%; border:1px solid white; border-bottom:1px solid gainsboro; }
 .record-container > a:hover { background-color: whitesmoke; border:1px solid gainsboro; }
 .summary { width:100%; float:left; width:100%; }
 .first { float:left; text-align:left; width: 40%; }
-.second { float:right; text-align:right; width: 60%; font-size:9pt; }
+.second { float:left; text-align:right; width: 50%; font-size:9pt; }
+.third { cursor:pointer; float:right; text-align:center; width:5%;
+		 transition: background-color 0.5s; -webkit-transition: background-color 0.5s, color 0.5s; }
+.third:hover { background-color:gainsboro; color:#0094ff; }

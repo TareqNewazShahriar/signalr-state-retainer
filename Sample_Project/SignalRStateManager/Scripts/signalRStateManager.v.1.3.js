@@ -12,7 +12,7 @@ function signalrStateManager(options)
 	/* globals */
 	var cons = {
 		pluginInit: new Date(),
-		dataDomClass: 'signalNotificationDom',
+		templateDom: 'signalNotificationDom',
 		storeKey: 'signalNotificationData',
 		addAt: { top: 'top', bottom: 'bottom' }
 	}
@@ -22,7 +22,7 @@ function signalrStateManager(options)
 	$(function()
 	{
 		pluginInitialisation();
-		notificationInitialisation();
+		signalrInitialisation();
 	});
 
 	/* calls at initialisation */
@@ -30,7 +30,7 @@ function signalrStateManager(options)
 	{
 		var dom = $(options.recordTemplateSelector);
 		$(dom).hide(); /* highest priority */
-		$(dom).addClass(cons.dataDomClass);
+		$(dom).addClass(cons.templateDom);
 		getStateAtPageLoad(); /* 2nd highest priority. if */
 		/* removed stored data if signed out */
 		if(options.signOutButtonSelector)
@@ -58,7 +58,7 @@ function signalrStateManager(options)
 		}
 	}
 
-	function notificationInitialisation()
+	function signalrInitialisation()
 	{
 		$.connection[options.signalrHubName].client[options.getNotifiedMethodName] = function(jsonObj)
 		{
@@ -66,16 +66,22 @@ function signalrStateManager(options)
 			addItemToStoredData(record, options.addAt);
 			/* append that notification */
 			var html = createHtml(record);
-			if(options.addAt == cons.addAt.bottom)
-				$(html).appendTo($('.' + cons.dataDomClass).parent());
+			var newDom = null;
+			if(options.addAt == cons.addAt.bottom) // add new item at
+				newDom = $(html).appendTo($('.' + cons.templateDom).parent());
 			else
-				$(html).prependTo($('.' + cons.dataDomClass).parent());
+				newDom = $(html).prependTo($('.' + cons.templateDom).parent());
+
+			if(options.itemRemoverSelector)
+				$(options.itemRemoverSelector).click(removeItem);
 
 			if(options.counterSelector)
 				increamentNotificationCounter(1);
 
 			if(typeof options.onNotificationArrival == 'function')
 				options.onNotificationArrival(record);
+			if(typeof options.onDataRender == 'function')
+				options.onDataRender();
 		}
 		$.connection.hub.start().done(function()
 		{
@@ -113,11 +119,34 @@ function signalrStateManager(options)
 		for(var i = 0; i < jsonList.length; i++)
 		{
 			dom = createHtml(jsonList[i]);
-			$(dom).appendTo($('.' + cons.dataDomClass).parent());
+			$(dom).appendTo($('.' + cons.templateDom).parent());
 		}
 
 		if(options.counterSelector)
 			increamentNotificationCounter(jsonList.length);
+		if(typeof options.onDataRender == 'function')
+			options.onDataRender();
+		if(options.itemRemoverSelector)
+			$(options.itemRemoverSelector).click(removeItem);
+	}
+
+	/* remove an item from DOM, stored json and decrease the counter */
+	function removeItem(e)
+	{
+		var itemDom = $(this).closest(options.recordTemplateSelector);
+		var index = $(options.panelSelector + ' ' + options.recordTemplateSelector)
+						.not('.' + cons.templateDom).index(itemDom);
+		
+		var removedItem = removeItemFromStoredData(index);
+		itemDom.fadeOut(function()
+		{
+			$(this).remove(); // remove the item when animation done
+			if(options.counterSelector)
+				increamentNotificationCounter(-1);
+		});
+		
+		if(typeof options.onItemRemoval == 'function')
+			options.onItemRemoval(removedItem);
 	}
 
 	function increamentNotificationCounter(i)
@@ -151,8 +180,8 @@ function signalrStateManager(options)
 	function createHtml(record)
 	{
 		/* clone the record render dom */
-		var dom = $('.' + cons.dataDomClass).clone();
-		dom.removeClass(cons.dataDomClass);
+		var dom = $('.' + cons.templateDom).clone();
+		dom.removeClass(cons.templateDom);
 		dom.show();
 		var html = dom[0].outerHTML; /* take html of the dom itself too */
 		/* render values in html */
@@ -202,5 +231,17 @@ function signalrStateManager(options)
 			jsonList = JSON.parse(unescape(strJson));
 
 		return jsonList;
+	}
+
+	function removeItemFromStoredData(index)
+	{
+		if(index < 0)
+			return null;
+
+		var jsonList = getStoredData(cons.storeKey);
+		var removedItems = jsonList.splice(index, 1);
+		storeData(cons.storeKey, jsonList);
+
+		return (removedItems.length > 0 ? removedItems[0] : null);
 	}
 }
