@@ -12,11 +12,11 @@ function signalrStateManager(options)
 	/* globals */
 	var cons = {
 		pluginInit: new Date(),
-		templateDom: 'signalNotificationDom',
-		storeKey: 'signalNotificationData',
+		templateDom: 'signalr_template_conainer',
+		storeKey: 'signalrData',
 		addAt: { top: 'top', bottom: 'bottom' }
 	}
-	var vars = { rendered: false }
+	var vars = { rendered: false, anyMotion:false }
 
 	/* at dom ready */
 	$(function()
@@ -40,7 +40,7 @@ function signalrStateManager(options)
 				sessionStorage.removeItem(cons.storeKey);
 			});
 		}
-		/* show/hide notification panel */
+		/* show/hide data panel */
 		if(options.panelOpenerSelector && options.panelSelector)
 		{
 			$(document).click(function(e)
@@ -64,7 +64,7 @@ function signalrStateManager(options)
 		{
 			var record = typeof jsonObj == 'string' ? JSON.parse(jsonObj) : jsonObj;
 			addItemToStoredData(record, options.addAt);
-			/* append that notification */
+			/* append the new data */
 			var html = createHtml(record);
 			var newDom = null;
 			if(options.addAt == cons.addAt.bottom) // add new item at
@@ -76,10 +76,12 @@ function signalrStateManager(options)
 				$(options.itemRemoverSelector).click(removeItem);
 
 			if(options.counterSelector)
-				increamentNotificationCounter(1);
+				increamentTheCounter(1);
 
-			if(typeof options.onNotificationArrival == 'function')
-				options.onNotificationArrival(record);
+			if(typeof options.onGetNotified == 'function')
+				options.onGetNotified(record);
+			if(typeof options.onChange == 'function')
+				options.onChange(record, 'added');
 			if(typeof options.onDataRender == 'function')
 				options.onDataRender();
 		}
@@ -108,7 +110,7 @@ function signalrStateManager(options)
 		});
 	}
 
-	/* check cookie and retrieve notification data */
+	/* check sessionStorage and retrieve stored data */
 	function getStateAtPageLoad()
 	{
 		var jsonList = getStoredData(cons.storeKey);
@@ -122,36 +124,50 @@ function signalrStateManager(options)
 			$(dom).appendTo($('.' + cons.templateDom).parent());
 		}
 
-		if(options.counterSelector)
-			increamentNotificationCounter(jsonList.length);
-		if(typeof options.onDataRender == 'function')
-			options.onDataRender();
+		// bind remove event
 		if(options.itemRemoverSelector)
 			$(options.itemRemoverSelector).click(removeItem);
+
+		// callbacks
+		if(options.counterSelector)
+			increamentTheCounter(jsonList.length);
+		if(typeof options.onDataRender == 'function')
+			options.onDataRender(jsonList);
+		if(typeof options.onLoad == 'function')
+			options.onLoad(jsonList);
 	}
 
 	/* remove an item from DOM, stored json and decrease the counter */
 	function removeItem(e)
 	{
+		if(vars.anyMotion) // if any deletion is in progress, don't start another
+			return;
+
 		var itemDom = $(this).closest(options.recordTemplateSelector);
 		var index = $(options.panelSelector + ' ' + options.recordTemplateSelector)
 						.not('.' + cons.templateDom).index(itemDom);
-		
+
 		var removedItem = removeItemFromStoredData(index);
-		itemDom.fadeOut(function()
+		vars.anyMotion = true;
+		itemDom.fadeOut('fast', function()
 		{
 			$(this).remove(); // remove the item when animation done
 			if(options.counterSelector)
-				increamentNotificationCounter(-1);
+				increamentTheCounter(-1);
+
+			// after completion, call callbacks
+			if(typeof options.onItemRemoval == 'function')
+				options.onItemRemoval(removedItem);
+			if(typeof options.onChange == 'function')
+				options.onChange(removedItem, 'removed');
+
+			vars.anyMotion = false;
 		});
-		
-		if(typeof options.onItemRemoval == 'function')
-			options.onItemRemoval(removedItem);
 	}
 
-	function increamentNotificationCounter(i)
+	function increamentTheCounter(i)
 	{
-		/* increment the notification counter */
+		/* increment the counter */
 		var counter = $(options.counterSelector);
 		if(counter[0].tagName.toUpperCase() == 'INPUT')
 		{
