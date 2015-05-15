@@ -24,8 +24,9 @@ public static void BroadcastFromServer(Log log)
 
 ```cs
 public string notificationList(List<Log> logs)
-{	
-	return new JavaScriptSerializer().Serialize(logs.OrderByDescending(x=>x.Id).Take(5));
+{
+	var shortList = logs.OrderByDescending(x=>x.Id).Take(5);
+	return new JavaScriptSerializer().Serialize(shortList);
 }
 ````
 
