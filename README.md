@@ -74,7 +74,7 @@ $(function()
 			{
 				console.log('Total ' + list.length + ' records have returned from the server.');
 			},
-			onNotificationArrival: function(obj)
+			onGetNotified: function(obj)
 			{
 				console.log('New data have come.');
 			}
@@ -85,7 +85,7 @@ $(function()
 
 ##### Plugin Parameter Description
 
-The parameter contains 10 options and 3 events.
+The parameter contains 11 options and 6 events.
 
 **Options:**
 
@@ -100,10 +100,10 @@ getListMethodName: 'notificationList'
 
 * getNotifiedMethodName *(string)*: Name of the client-side js method you want the plugin to define so that you can call from SignalR code, when a new notification is available.
 
-* recordTemplateSelector *(string)*: Now this option is about the HTML. This option is just about a DOM selector, but here I shall describe what this option is about; this option is about where to render the notification data of your HTML page. Design your HTML and tell the plugin where to render the property values. If you're familiar with AngularJS then you're familiar with this part too. Let's recall your object has properties of - Id, NotficationName, CreationDate. So write your HTML like this way:
+* recordTemplateSelector *(string)*: This option is about where to render the notification data of your HTML page. Design your HTML and tell the plugin where to render the property values. If you're familiar with AngularJS then you're familiar with this part too. Let's recall your object has properties of - Id, NotificationName, CreationDate. So write your HTML like this way:
 
 ```html
-<div class="record-container">
+<div class="record-template">
 	<span>[[NotficationName]]</span>
 	<span>[[CreationDate]]</span>
 	<a href="/Notification/Details/[[Id]]">See Detail<a/>
@@ -112,7 +112,7 @@ getListMethodName: 'notificationList'
 
 So now just pass the the CSS class name:
 ```js
-recordTemplateSelector:'record-container'
+recordTemplateSelector:'.record-template'
 ```
 
 * dateTimeFieldName *(string) / optional*: Tell the plugin your date-time property name. The value of this field will be shown in a certain format. For example: the object you're passing have those properties: Id, NotficationName, CreationDate. Then pass 'CreationDate' to that parameter option: 
@@ -120,9 +120,9 @@ recordTemplateSelector:'record-container'
 dateTimeFieldName: 'CreationDate'
 ```
 
-* panelSelector *(string) / optional*: If you want that the notification panel will be opened on click at notification counter DOM then pass the selector of the notification panel container.
+* counterSelector *(string) / optional*: Pass the selector of the DOM where you want to show the notification counter to inform the user that how many notifications are available. 
 ```js
- panelSelector: '.record-container'
+counterSelector: '#countNotification'
 ```
 
 * panelOpenerSelector *(string) / optional*: Selector of the DOM element that will be used to open the notification panel on onclick. Generally the notification counter DOM can be used for that.
@@ -130,14 +130,19 @@ dateTimeFieldName: 'CreationDate'
 panelOpenerSelector: '#countNotification'
 ```
 
-* counterSelector *(string) / optional*: Pass the selector of the DOM where you want to show the notification counter to inform the user that how many notifications are available. 
+* panelSelector *(string) / optional*: If you want that the notification panel will be opened on click at notification counter DOM then pass the selector of the notification panel container.
 ```js
-counterSelector: '#countNotification'
+ panelSelector: '.record-container'
 ```
 
 * signOutButtonSelector *(string) / optional*: Selector of the sign-out button or link. The time when user will click on the sign-out button all locally saved data will be deleted for safely. '#signout',
 ```js
 signOutButtonSelector: '#signout'
+```
+
+* itemRemoverSelector *(string)/optional*: If you have remove or clear button for each notification, then pass the selector to that parameter.
+```js
+itemRemoverSelector: '.remove-btn'
 ```
 
 * addAt *(string) / optional*: Default value for this optino is *top*. If you want that new notification will be shown at bottom then pass 'bottom'.
@@ -159,12 +164,48 @@ onGetList: function(list)
 }
 ```
 
-* onNotificationArrival *(function) / optional*: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data through parameter.
+* onGetNotified *(function) / optional*: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data through parameter.
 ```js
-onNotificationArrival: function(obj)
+onGetNotified: function(obj)
 {
 	console.log('New data have come.');
 }
 ```
+
+* onItemRemoval *(function) / optional*: The callback function, to execute when the user will remove an item.
+```js
+onItemRemoval: function(removedItem)
+{
+	console.log('Flag the removed item (ID-' + removedItem.Id + ') as read/removed on Server. You\'ve got my idea, right!');
+}
+```
+
+* onLoad *(function) / optional*: This callback will be fired at the beginning of getting list and on every page load after resotore whole state.
+
+Let me explain it, at the begining of a session you may want to load a list of most recent notifications or chats history. Again, after every page load the plugin reloads the whole state. On these both occasions, this event will be fired. Run the sample application and test it.
+```js
+onLoad: function()
+{
+	console.log('all data loaded.');
+}
+```
+
+* onChange *(function) / optional*: After arrival of each new notification or after delettion each item, this event will be executed.
+```js
+onChange: function()
+{
+	console.log('Either new notifcation came or you deleted a item.');
+}
+```
+
+onDataRender
+* onDataRender *(function) / optional*: Afte getting the list from server or restoring the state or after getting a new notification, this event will be executed.
+```js
+onDataRender: function()
+{
+	console.log('Data render complete.');
+}
+```
+
 
 **Feel free to create issues for any bug or additional useful feature.**
