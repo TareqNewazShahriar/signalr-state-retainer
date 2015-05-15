@@ -1,5 +1,6 @@
 #### SignalR State Manager
-This plugin helps you to retain all the notification or chat data on client side and render those information after page redirection or form submission. Developers don't need to return those data from the server every time. The sample application of this repo have been hosted in appharbor - http://signalrstatemgr.apphb.com.
+This plugin helps you to retain all the notification or chat data on client side and render those information after page redirection or form submission. Developers don't need to return those data from the server every time.
+Get a go with the <a target="_blank" href="http://signalrstatemgr.apphb.com">Demo</a>, the sample application have been hosted in appharbor.
 
 Here are the quick steps (for nerds) of How to use the plugin-
 
