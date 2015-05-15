@@ -147,7 +147,7 @@ itemRemoverSelector: '.remove-btn'
 
 * addAt *(string) / optional*: Default value for this optino is *top*. If you want that new notification will be shown at bottom then pass 'bottom'.
 
-**3 Events:**
+**6 Events:**
 * onSignalrInit *(function) / optional*: Pass a function to execute at the time when the SignalR is ready. Develolper's can use this callback to make any hidden or disabled DOM visible/enable that needs SignalR.
 ```js
 onSignalrInit: function()
