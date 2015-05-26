@@ -208,4 +208,4 @@ onDataRender: function()
 ```
 
 
-**Feel free to create issues for any bug or additional useful feature.**
+**Feel free to create issues for any bug or additional feature.**
