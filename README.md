@@ -6,7 +6,7 @@ Here are the quick steps (for nerds) of How to use the plugin-
 
 ###### Server-side Steps
 * **Step 1:** In your SignalR hub, add a method which will call the client method when a new notification will be available.
-Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with that name. This method will return the Json of the notification data. For example
+Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with same name. The server-side method will return the Json of the notification data. For example
 
 ```cs
 using System.Web.Script.Serialization;
