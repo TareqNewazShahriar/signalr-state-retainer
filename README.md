@@ -42,7 +42,7 @@ public string notificationList(List<Log> logs)
 * **Steps 4**: Add an Html container to your desired place to render the data using the properties of the notification data. For example, notification model has those fields: Id, NotficationName, CreationDate. So write your HTML like this:
 
 ```html
-<div class="record-container">
+<div class="record-template">
 	<span>[[NotficationName]]</span>
 	<span>[[CreationDate]]</span>
 	<a href="/Notification/Details/[[Id]]">See Detail<a/>
