@@ -199,7 +199,7 @@ onLoad: function()
 }
 ```
 
-* onChange *(function) / optional*: After arrival of each new notification or after delettion each item, this event will be executed.
+* onChange *(function) / optional*: After arrival of each new notification or after deletion of each item, this event will be fired.
 ```js
 onChange: function()
 {
