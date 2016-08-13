@@ -96,7 +96,7 @@ $(function()
 
 The parameter contains 11 options and 6 events.
 
-##### Options:
+#### Options:
 
 * signalrHubName *(string)*: Pass the name of your C#/VB class that implemented the SignalR Hub class. For example:
 ```js
