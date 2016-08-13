@@ -2,11 +2,11 @@
 This plugin helps you to retain all the notifications or chat data on client side and render those information after page redirection, form submission etc. Developers don't need to send those data from the server every time.
 Get a go with the <a target="_blank" href="http://signalrstatemgr.apphb.com">Demo</a>, the sample application has been hosted in appharbor.
 
-Here are the quick steps (for nerds) of How to use the plugin-
+Here are quick steps (for the nerds) of How to use the plugin-
 
 ###### Server-side Steps
 * **Step 1:** In your SignalR hub, add a method which will call the client method when a new notification will be available.
-Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with same name. The server-side method will return the Json of the notification data. For example
+Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with the same name. The server-side method will return the Json of the notification data. For example
 
 ```cs
 using System.Web.Script.Serialization;
@@ -17,6 +17,15 @@ public static void BroadcastFromServer(Log log)
 
 	var signalrHub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
 	signalrHub.Clients.All.getNotified(jsonObj);
+}
+
+// the 'Log' model
+public class Log
+{
+	public int Id { get; set; }
+	public string Summary { get; set; }
+	public string User { get; set; }
+	public DateTime CreationDate { get; set; }
 }
 ````
 
