@@ -217,4 +217,4 @@ onDataRender: function()
 ```
 
 
-**Feel free to create issues for any bug or additional feature.**
+**Feel free to create issues for any bug or additional feature request.**
