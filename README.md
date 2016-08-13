@@ -4,7 +4,7 @@ Get a go with the <a target="_blank" href="http://signalrstatemgr.apphb.com">Dem
 
 Here are quick steps (for the nerds) of How to use the plugin-
 
-##### Server-side Steps
+#### Server-side Steps
 * **Step 1:** In your SignalR hub, add a method which will call the client method when a new notification will be available.
 Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with the same name. The server-side method will return the Json of the notification data. For example
 
@@ -40,7 +40,7 @@ public string notificationList(List<Log> logs)
 ````
 
 
-##### JS, Html Steps
+#### JS, Html Steps
 * **Steps 3**: Add the plugin after SignalR scripts-
 ```html
 <script src="~/Scripts/jquery.signalR-2.1.1.min.js"></script>
@@ -96,7 +96,7 @@ $(function()
 
 The parameter contains 11 options and 6 events.
 
-**Options:**
+##### Options:
 
 * signalrHubName *(string)*: Pass the name of your C#/VB class that implemented the SignalR Hub class. For example:
 ```js
@@ -156,7 +156,7 @@ itemRemoverSelector: '.remove-btn'
 
 * addAt *(string) / optional*: Default value for this optino is *top*. If you want that new notification will be shown at bottom then pass 'bottom'.
 
-**6 Events:**
+#### 6 Events:
 * onSignalrInit *(function) / optional*: Pass a function to execute at the time when the SignalR is ready. Develolper's can use this callback to make any hidden or disabled DOM visible/enable that needs SignalR.
 ```js
 onSignalrInit: function()
