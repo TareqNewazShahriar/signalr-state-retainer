@@ -1,10 +1,10 @@
-#### SignalR State Manager
+### SignalR State Manager
 This plugin helps you to retain all the notifications or chat data on client side and render those information after page redirection, form submission etc. Developers don't need to send those data from the server every time.
 Get a go with the <a target="_blank" href="http://signalrstatemgr.apphb.com">Demo</a>, the sample application has been hosted in appharbor.
 
 Here are quick steps (for the nerds) of How to use the plugin-
 
-###### Server-side Steps
+##### Server-side Steps
 * **Step 1:** In your SignalR hub, add a method which will call the client method when a new notification will be available.
 Let's name the Hub name as 'NotificationHub' and the client method as 'getNotified'. We will provide that name to the plugin to create a JS method with the same name. The server-side method will return the Json of the notification data. For example
 
@@ -40,7 +40,7 @@ public string notificationList(List<Log> logs)
 ````
 
 
-###### JS, Html Steps
+##### JS, Html Steps
 * **Steps 3**: Add the plugin after SignalR scripts-
 ```html
 <script src="~/Scripts/jquery.signalR-2.1.1.min.js"></script>
@@ -92,7 +92,7 @@ $(function()
 ```
 
 
-##### Plugin Parameter Description
+#### Plugin Parameter Description
 
 The parameter contains 11 options and 6 events.
 
