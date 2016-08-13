@@ -165,7 +165,7 @@ onSignalrInit: function()
 }
 ```
 
-* onGetList *(function) / optional*: Pass a function to execute after rendering the notification list at session start. This callback will be called with notification list so that you can leverage.
+* onGetList *(function) / optional*: Pass a function to execute after rendering the notification list at session start. This callback will be called with notification list so that you can leverage it.
 ```js
 onGetList: function(list)
 {
