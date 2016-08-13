@@ -81,7 +81,7 @@ $(function()
 			},
 			onGetList: function(list)
 			{
-				console.log('Total ' + list.length + ' records have returned from the server.');
+				console.log('Total ' + list.length + ' records have been returned from the server.');
 			},
 			onGetNotified: function(obj)
 			{
