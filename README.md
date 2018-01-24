@@ -157,7 +157,7 @@ itemRemoverSelector: '.remove-btn'
 * addAt *(string) / optional*: Default value for this optino is *top*. If you want that new notification will be shown at bottom then pass 'bottom'.
 
 #### 6 Events:
-* onSignalrInit *(function) / optional*: Pass a function to execute at the time when the SignalR is ready. Develolper's can use this callback to make any hidden or disabled DOM visible/enable that needs SignalR.
+* onSignalrInit: Pass a function to execute at the time when the SignalR is ready. Develolper's can use this callback to make any hidden or disabled DOM visible/enable that needs SignalR.
 ```js
 onSignalrInit: function()
 {
@@ -165,7 +165,7 @@ onSignalrInit: function()
 }
 ```
 
-* onGetList *(function) / optional*: Pass a function to execute after rendering the notification list at session start. This callback will be called with notification list so that you can leverage it.
+* onGetList: Pass a function to execute after rendering the notification list at session start. This callback will be called with notification list so that you can leverage it.
 ```js
 onGetList: function(list)
 {
@@ -173,7 +173,7 @@ onGetList: function(list)
 }
 ```
 
-* onGetNotified *(function) / optional*: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data through parameter.
+* onGetNotified: Pass a callback to execute when a new notification will arrive. This callback will pass the newly arrived notification data through parameter.
 ```js
 onGetNotified: function(obj)
 {
@@ -181,7 +181,7 @@ onGetNotified: function(obj)
 }
 ```
 
-* onItemRemoval *(function) / optional*: The callback function, to execute when the user will remove an item.
+* onItemRemoval: The callback function, to execute when the user will remove an item.
 ```js
 onItemRemoval: function(removedItem)
 {
@@ -189,7 +189,7 @@ onItemRemoval: function(removedItem)
 }
 ```
 
-* onLoad *(function) / optional*: This callback will be fired at the beginning of getting list and on every page load after resotore whole state.
+* onLoad: This callback will be fired at the beginning of getting list and on every page load after resotore whole state.
 
 Let me explain it, at the begining of a session you may want to load a list of most recent notifications or chats history. Again, after every page load the plugin reloads the whole state. On these both occasions, this event will be fired. Run the sample application and test it.
 ```js
@@ -199,7 +199,7 @@ onLoad: function()
 }
 ```
 
-* onChange *(function) / optional*: After arrival of each new notification or after deletion of each item, this event will be fired.
+* onChange: After arrival of each new notification or after deletion of each item, this event will be fired.
 ```js
 onChange: function()
 {
@@ -207,8 +207,7 @@ onChange: function()
 }
 ```
 
-onDataRender
-* onDataRender *(function) / optional*: Afte getting the list from server or restoring the state or after getting a new notification, this event will be executed.
+* onDataRender: After getting the list from server or restoring the state or after getting a new notification, this event will be executed.
 ```js
 onDataRender: function()
 {
