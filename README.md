@@ -98,18 +98,18 @@ The parameter contains 11 options and 6 events.
 
 #### Options:
 
-* signalrHubName *(string)*: Pass the name of your C#/VB class that implemented the SignalR Hub class. For example:
+* **signalrHubName** *(string)*: Pass the name of your C#/VB class that implemented the SignalR Hub class. For example:
 ```js
 signalrHubName: 'NotificationHub'
 ```
-* getListMethodName *(string) / optional*: Name of the SignalR server-side method which will be called at the beginning of the application session to get a list of notification/chat data you want the user to see when they will be signed-in. For example:
+* **getListMethodName** *(string) / optional*: Name of the SignalR server-side method which will be called at the beginning of the application session to get a list of notification/chat data you want the user to see when they will be signed-in. For example:
 ```js
 getListMethodName: 'notificationList'
 ```
 
-* getNotifiedMethodName *(string)*: Name of the client-side js method you want the plugin to define so that you can call from SignalR code, when a new notification is available.
+* **getNotifiedMethodName** *(string)*: Name of the client-side js method you want the plugin to define so that you can call from SignalR code, when a new notification is available.
 
-* recordTemplateSelector *(string)*: This option is about where to render the notification data of your HTML page. Design your HTML and tell the plugin where to render the property values. If you're familiar with AngularJS then you're familiar with this part too. Let's recall your object has properties of - Id, NotificationName, CreationDate. So write your HTML like this way:
+* **recordTemplateSelector** *(string)*: This option is about where to render the notification data of your HTML page. Design your HTML and tell the plugin where to render the property values. If you're familiar with AngularJS then you're familiar with this part too. Let's recall your object has properties of - Id, NotificationName, CreationDate. So write your HTML like this way:
 
 ```html
 <div class="record-template">
@@ -124,17 +124,17 @@ So now just pass the the CSS class name:
 recordTemplateSelector:'.record-template'
 ```
 
-* dateTimeFieldName *(string) / optional*: Tell the plugin your date-time property name. The value of this field will be shown in a certain format. For example: the object you're passing have those properties: Id, NotficationName, CreationDate. Then pass 'CreationDate' to that parameter option: 
+* **dateTimeFieldName** *(string) / optional*: Tell the plugin your date-time property name. The value of this field will be shown in a certain format. For example: the object you're passing have those properties: Id, NotficationName, CreationDate. Then pass 'CreationDate' to that parameter option: 
 ```js
 dateTimeFieldName: 'CreationDate'
 ```
 
-* counterSelector *(string) / optional*: Pass the selector of the DOM where you want to show the notification counter to inform the user that how many notifications are available. 
+* **counterSelector** *(string) / optional*: Pass the selector of the DOM where you want to show the notification counter to inform the user that how many notifications are available. 
 ```js
 counterSelector: '#countNotification'
 ```
 
-* panelOpenerSelector *(string) / optional*: Selector of the DOM element that will be used to open the notification panel on onclick. Generally the notification counter DOM can be used for that.
+* **panelOpenerSelector** *(string) / optional*: Selector of the DOM element that will be used to open the notification panel on onclick. Generally the notification counter DOM can be used for that.
 ```js
 panelOpenerSelector: '#countNotification'
 ```
