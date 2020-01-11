@@ -48,7 +48,7 @@ public string notificationList(List<Log> logs)
 <script src="~/Scripts/signalRsignalrStateManager.min.v.x.x.js"></script>
 ```
 
-* **Steps 4**: Add an Html container to your desired place to render the data using the properties of the notification data. For example, notification model has those fields: Id, NotficationName, CreationDate. So write your HTML like this:
+* **Steps 4**: Add an Html container to your desired place to render the data using the properties of the notification data. For example, notification model has those properties: Id, NotficationName, CreationDate. So write your HTML like this:
 
 ```html
 <div class="record-template">
