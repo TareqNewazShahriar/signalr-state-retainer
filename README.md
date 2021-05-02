@@ -1,4 +1,4 @@
-### SignalR Client-side State Retainer
+### State Retainer
 This plugin helps you to retain all the notifications or chat data on client side and render those information after page redirections, form submissions etc. The application doesn't need to send those data from the server after every page load.
 Get a go with the <a target="_blank" href="http://signalrstatemgr.apphb.com">Demo</a>, the sample application has been hosted in appharbor.
 
@@ -13,10 +13,10 @@ using System.Web.Script.Serialization;
 
 public static void BroadcastFromServer(Log log)
 {
-	var jsonObj = new JavaScriptSerializer().Serialize(new { log.Id, log.Summary, log.User, log.CreationDate });
+   var jsonObj = new JavaScriptSerializer().Serialize(new { log.Id, log.Summary, log.User, log.CreationDate });
 
-	var signalrHub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
-	signalrHub.Clients.All.getNotified(jsonObj);
+   var signalrHub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+   signalrHub.Clients.All.getNotified(jsonObj);
 }
 
 // the 'Log' model
@@ -45,7 +45,7 @@ public string notificationList(List<Log> logs)
 ```html
 <script src="~/Scripts/jquery.signalR-2.1.1.min.js"></script>
 <script src="~/signalr/hubs"></script>
-<script src="~/Scripts/signalRsignalrStateManager.min.v.x.x.js"></script>
+<script src="~/Scripts/signalRStateManager.min.v.x.x.js"></script>
 ```
 
 * **Steps 4**: Add an Html container to your desired place to render the data using the properties of the notification data. For example, notification model has those properties: Id, NotficationName, CreationDate. So write your HTML like this:
