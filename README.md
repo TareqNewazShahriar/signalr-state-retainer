@@ -22,10 +22,10 @@ public static void BroadcastFromServer(Log log)
 // the 'Log' model
 public class Log
 {
-	public int Id { get; set; }
-	public string Summary { get; set; }
-	public string User { get; set; }
-	public DateTime CreationDate { get; set; }
+   public int Id { get; set; }
+   public string Summary { get; set; }
+   public string User { get; set; }
+   public DateTime CreationDate { get; set; }
 }
 ````
 
@@ -34,8 +34,8 @@ public class Log
 ```cs
 public string notificationList(List<Log> logs)
 {
-	var shortList = logs.OrderByDescending(x=>x.Id).Take(5);
-	return new JavaScriptSerializer().Serialize(shortList);
+   var shortList = logs.OrderByDescending(x=>x.Id).Take(5);
+   return new JavaScriptSerializer().Serialize(shortList);
 }
 ````
 
@@ -52,9 +52,9 @@ public string notificationList(List<Log> logs)
 
 ```html
 <div class="record-template">
-	<span>[[NotficationName]]</span>
-	<span>[[CreationDate]]</span>
-	<a href="/Notification/Details/[[Id]]">See Detail<a/>
+   <span>[[NotficationName]]</span>
+   <span>[[CreationDate]]</span>
+   <a href="/Notification/Details/[[Id]]">See Detail<a/>
 </div>
 ```
 
@@ -63,31 +63,31 @@ public string notificationList(List<Log> logs)
 ```javascript
 $(function()
 {
-	signalrStateManager({
-			signalrHubName: 'NotificationHub',
-			getListMethodName: 'notificationList',
-			getNotifiedMethodName: 'getNotified',
-			recordTemplateSelector: '.record-template',
-			dateTimeFieldName: 'CreationDate',
-			counterSelector: '#countNotification',
-			panelSelector: '.record-container',
-			panelOpenerSelector: '#countNotification',
-			signOutButtonSelector: '#signout',
-			// addAt: 'bottom',
-			/* events */
-			onSignalrInit: function() /* calls after signalr initialisation */
-			{
-				$('#notify').removeAttr('disabled');
-			},
-			onGetList: function(list)
-			{
-				console.log('Total ' + list.length + ' records have been returned from the server.');
-			},
-			onGetNotified: function(obj)
-			{
-				console.log('New data have come.');
-			}
-		});
+   signalrStateManager({
+         signalrHubName: 'NotificationHub',
+         getListMethodName: 'notificationList',
+         getNotifiedMethodName: 'getNotified',
+         recordTemplateSelector: '.record-template',
+         dateTimeFieldName: 'CreationDate',
+         counterSelector: '#countNotification',
+         panelSelector: '.record-container',
+         panelOpenerSelector: '#countNotification',
+         signOutButtonSelector: '#signout',
+         // addAt: 'bottom',
+         /* events */
+         onSignalrInit: function() /* calls after signalr initialisation */
+         {
+            $('#notify').removeAttr('disabled');
+         },
+         onGetList: function(list)
+         {
+            console.log('Total ' + list.length + ' records have been returned from the server.');
+         },
+         onGetNotified: function(obj)
+         {
+            console.log('New data have come.');
+         }
+      });
 });
 ```
 
@@ -113,9 +113,9 @@ getListMethodName: 'notificationList'
 
 ```html
 <div class="record-template">
-	<span>[[NotficationName]]</span>
-	<span>[[CreationDate]]</span>
-	<a href="/Notification/Details/[[Id]]">See Detail<a/>
+   <span>[[NotficationName]]</span>
+   <span>[[CreationDate]]</span>
+   <a href="/Notification/Details/[[Id]]">See Detail<a/>
 </div>
 ```
 
@@ -161,7 +161,7 @@ itemRemoverSelector: '.remove-btn'
 ```js
 onSignalrInit: function()
 {
-	$('#sendMsg').removeAttr('disabled');
+   $('#sendMsg').removeAttr('disabled');
 }
 ```
 
@@ -169,7 +169,7 @@ onSignalrInit: function()
 ```js
 onGetList: function(list)
 {
-	console.log('Total ' + list.length + ' records have returned from the server.');
+   console.log('Total ' + list.length + ' records have returned from the server.');
 }
 ```
 
@@ -177,7 +177,7 @@ onGetList: function(list)
 ```js
 onGetNotified: function(obj)
 {
-	console.log('New data have come.');
+   console.log('New data have come.');
 }
 ```
 
@@ -185,7 +185,7 @@ onGetNotified: function(obj)
 ```js
 onItemRemoval: function(removedItem)
 {
-	console.log('Flag the removed item (ID-' + removedItem.Id + ') as read/removed on Server. You\'ve got my idea, right!');
+   console.log('Flag the removed item (ID-' + removedItem.Id + ') as read/removed on Server. You\'ve got my idea, right!');
 }
 ```
 
@@ -195,7 +195,7 @@ Let me explain it, at the begining of a session you may want to load a list of m
 ```js
 onLoad: function()
 {
-	console.log('all data loaded.');
+   console.log('all data loaded.');
 }
 ```
 
@@ -203,7 +203,7 @@ onLoad: function()
 ```js
 onChange: function()
 {
-	console.log('Either new notifcation came or you deleted a item.');
+   console.log('Either new notifcation came or you deleted a item.');
 }
 ```
 
@@ -211,7 +211,7 @@ onChange: function()
 ```js
 onDataRender: function()
 {
-	console.log('Data render complete.');
+   console.log('Data render complete.');
 }
 ```
 
