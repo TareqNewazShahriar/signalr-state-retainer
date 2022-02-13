@@ -2,7 +2,7 @@
 This plugin helps you to retain all the notifications or chat data on client side and render those information after page redirections, form submissions etc. The application doesn't need to send those data from the server after every page load.
 Get a go with the <a target="_blank" href="http://signalrstatemgr.apphb.com">Demo</a>, the sample application has been hosted in appharbor.
 
-Here are the quick steps (for the nerds) of How to use the plugin-
+Here are the steps of using the plugin-
 
 #### Server-side Steps
 * **Step 1:** In your SignalR hub, add a method which will call the client method when a new notification will be available.
